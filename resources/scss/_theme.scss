@@ -1,0 +1,7 @@
+/* Laravel Source Files */
+@source '../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/* Tailwindcss Plugins */
+@plugin "@tailwindcss/forms";
+
+@theme {}
