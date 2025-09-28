@@ -24,11 +24,11 @@
                         {{ __('Courses') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="'students'" :active="request()->routeIs('students')">
+                    <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
                         {{ __('Students') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="'certificates'" :active="request()->routeIs('certificates')">
+                    <x-nav-link :href="'certificates'" :active="request()->routeIs('certificates.*')">
                         {{ __('Certificates') }}
                     </x-nav-link>
                 </div>
