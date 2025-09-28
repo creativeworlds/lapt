@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CentreController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,4 +20,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::resource('centres', CentreController::class)->middleware(['auth']);
+Route::resource('centres', CentreController::class)->middleware('auth');
+Route::resource('courses', CourseController::class)->middleware('auth');

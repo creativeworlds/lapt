@@ -16,11 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('centres.index')" :active="request()->routeIs(['centres.index', 'centres.edit', 'centres.create', 'centres.show'])">
+                    <x-nav-link :href="route('centres.index')" :active="request()->routeIs('centres.*')">
                         {{ __('Centres') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="'courses'" :active="request()->routeIs('courses')">
+                    <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
                         {{ __('Courses') }}
                     </x-nav-link>
 
