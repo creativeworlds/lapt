@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CentreController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -24,4 +25,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::resource('centres', CentreController::class)->middleware('auth');
 Route::resource('courses', CourseController::class)->middleware('auth');
 Route::resource('students', StudentController::class)->middleware('auth');
-Route::post('student/{student}/courses', [StudentController::class, 'courseAllotment'])->name('student.courses')->middleware('auth');
+Route::post('student/{student}/courses-allotment', [StudentController::class, 'courseAllotment'])->name('student.courseAllotment')->middleware('auth');
+Route::resource('certificates', CertificateController::class)->middleware('auth');
+Route::get('student/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('student.courses')->middleware('auth');

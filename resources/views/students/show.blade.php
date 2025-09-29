@@ -63,7 +63,7 @@
             <div class="bg-white p-6 rounded-lg shadow">
                 <h2 class="text-xl font-semibold mb-4">Add New Course</h2>
 
-                <form action="{{ route('student.courses', $student->id) }}" method="post" class="space-y-4">
+                <form action="{{ route('student.courseAllotment', $student->id) }}" method="post" class="space-y-4">
                     @csrf
 
                     @if(session('message'))

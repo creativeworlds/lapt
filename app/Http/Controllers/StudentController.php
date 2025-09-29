@@ -77,4 +77,8 @@ class StudentController extends Controller
         $student->courses()->syncWithoutDetaching([$req->course_id]);
         return back()->with('message', 'Student course allotted successfully.');
     }
+
+    public function getStudentCourses(Student $student) {
+        return $student->courses()->get();
+    }
 }
