@@ -5,7 +5,8 @@
         </h2>
 
         <!-- View All Centres Button -->
-        <a href="{{ route('students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md shadow hover:bg-gray-300">
+        <a href="{{ route('students.index') }}"
+            class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md shadow hover:bg-gray-300">
             View All Students
         </a>
     </x-slot>
@@ -21,9 +22,27 @@
                     <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('message') }}</p>
                 @endif
 
+                <!-- Select Centre -->
+                <div>
+                    <label for="centreId" class="block text-sm font-medium text-gray-700">Centre</label>
+                    <select name="centre_id" id="centreId"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <option value="">-- Select Centre --</option>
+                        @foreach($centres as $centre)
+                            <option value="{{ $centre->id }}" {{ old('centre_id') == $centre->id ? 'selected' : '' }}>
+                                {{ $centre->name }} ({{ $centre->code }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('centre_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input type="text" name="name" id="name" value="{{ old('name') }}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -31,7 +50,8 @@
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="text" name="email" id="email" value="{{ old('email') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input type="text" name="email" id="email" value="{{ old('email') }}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -39,7 +59,8 @@
 
                 <div>
                     <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input type="text" name="phone_number" id="phoneNumber" value="{{ old('phone_number') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <input type="text" name="phone_number" id="phoneNumber" value="{{ old('phone_number') }}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @error('phone_number')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -47,7 +68,8 @@
 
                 <!-- Action Buttons -->
                 <div class="flex items-center justify-end space-x-3">
-                    <a href="{{ route('students.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                    <a href="{{ route('students.index') }}"
+                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
                         Cancel
                     </a>
                     <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">

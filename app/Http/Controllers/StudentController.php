@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Centre;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        $centres = Centre::all();
+        return view('students.create', compact('centres'));
     }
 
     /**
@@ -46,7 +48,8 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view('students.edit', compact('student'));
+        $centres = Centre::all();
+        return view('students.edit', compact('student', 'centres'));
     }
 
     /**

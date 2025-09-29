@@ -24,6 +24,7 @@
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Phone Number</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Centre</th>
                             <th class="px-6 py-3 text-right text-sm font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
@@ -33,6 +34,7 @@
                                 <td class="px-6 py-4 text-sm text-gray-800">{{ $student->name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $student->email }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $student->phone_number }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">{{ $student->centre->name }}</td>
                                 <td class="px-6 py-4 text-sm text-right space-x-2">
                                     <!-- Edit button -->
                                     <a href="{{ route('students.edit', $student) }}" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
