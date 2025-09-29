@@ -48,7 +48,9 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="text-right">
+                    <a href="{{ route('certificate.pdf', $certificate) }}" class="font-bold text-blue-800 inline-block mb-4" target="_blank">Print</a>
+
                     {{ $qrCode }}
                 </div>
             </div>

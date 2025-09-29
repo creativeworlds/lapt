@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificate;
 use App\Models\Student;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -67,5 +68,12 @@ class CertificateController extends Controller
     public function destroy(Certificate $certificate)
     {
         //
+    }
+
+       public function generatePdf(Certificate $certificate)
+    {
+        $qrCode = QrCode::size(200)->generate(json_encode($certificate->student->only(['name', 'email', 'phone_number'])));
+        $pdf= Pdf::loadView('certificates.pdf', compact('certificate', 'qrCode'));
+        return $pdf->stream("{$certificate->student->name}_{$certificate->course->name}.pdf");
     }
 }

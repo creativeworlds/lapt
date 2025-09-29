@@ -28,3 +28,4 @@ Route::resource('students', StudentController::class)->middleware('auth');
 Route::post('student/{student}/courses-allotment', [StudentController::class, 'courseAllotment'])->name('student.courseAllotment')->middleware('auth');
 Route::resource('certificates', CertificateController::class)->middleware('auth');
 Route::get('student/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('student.courses')->middleware('auth');
+Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'generatePdf'])->name('certificate.pdf')->middleware('auth');
