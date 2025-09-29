@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Certificate;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CertificateController extends Controller
 {
@@ -40,7 +41,8 @@ class CertificateController extends Controller
      */
     public function show(Certificate $certificate)
     {
-        return view('certificates.show', compact('certificate'));
+        $qrCode = QrCode::size(200)->generate(json_encode($certificate->student->only(['name', 'email', 'phone_number'])));
+        return view('certificates.show', compact('certificate', 'qrCode'));
     }
 
     /**

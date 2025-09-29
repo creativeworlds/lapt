@@ -47,6 +47,10 @@
                         <div><span class="font-semibold">Status: </span> {{ ucfirst($certificate->status) }}</div>
                     </div>
                 </div>
+
+                <div>
+                    {{ $qrCode }}
+                </div>
             </div>
         </div>
     </div>
