@@ -4,7 +4,8 @@
             {{ __('Students') }}
         </h2>
 
-        <a href="{{ route('students.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <a href="{{ route('students.create') }}"
+            class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             Add Student
         </a>
     </x-slot>
@@ -36,16 +37,27 @@
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $student->phone_number }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $student->centre->name }}</td>
                                 <td class="px-6 py-4 text-sm text-right space-x-2">
+
+                                    <!-- View button -->
+                                    <a href="{{ route('students.show', $student) }}"
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                        View
+                                    </a>
+
                                     <!-- Edit button -->
-                                    <a href="{{ route('students.edit', $student) }}" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                    <a href="{{ route('students.edit', $student) }}"
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                                         Edit
                                     </a>
 
                                     <!-- Delete button -->
-                                    <form action="{{ route('students.destroy', $student) }}" method="post" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this centre?');">
+                                    <form action="{{ route('students.destroy', $student) }}" method="post"
+                                        class="inline-block"
+                                        onsubmit="return confirm('Are you sure you want to delete this centre?');">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
+                                        <button type="submit"
+                                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
                                             Delete
                                         </button>
                                     </form>

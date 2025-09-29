@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CentreSeeder::class,
             CourseSeeder::class,
-            StudentSeeder::class
+            StudentSeeder::class,
+            CourseStudentSeeder::class
         ]);
     }
 }

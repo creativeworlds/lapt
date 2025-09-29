@@ -24,13 +24,13 @@ class StudentSeeder extends Seeder
                 'name' => 'Student 2',
                 'email' => 'student2@lapt.org',
                 'phone_number' => '9876123450',
-                'centre_id'=> 1,
+                'centre_id'=> 2,
             ],
             [
                 'name' => 'Student 3',
                 'email' => 'student3@lapt.org',
                 'phone_number' => '1234560987',
-                'centre_id'=> 1,
+                'centre_id'=> 3,
             ]
         ]);
 
