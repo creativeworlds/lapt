@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             CentreSeeder::class,
-            CourseSeeder::class,
-            StudentSeeder::class,
-            CourseStudentSeeder::class,
-            CertificateSeeder::class
+            // CourseSeeder::class,
+            // StudentSeeder::class,
+            // CourseStudentSeeder::class,
+            // CertificateSeeder::class
         ]);
     }
 }

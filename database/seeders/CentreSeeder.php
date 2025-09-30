@@ -12,23 +12,34 @@ class CentreSeeder extends Seeder
      */
     public function run(): void
     {
-        // multiple row create
-        $centres = collect([
-            [
-                'name' => 'Ghaziabad',
-                'code' => '201001',
-            ],
-            [
-                'name' => 'Modinagar',
-                'code' => '201204',
-            ],
-            [
-                'name' => 'Noida',
-                'code' => '201301',
-            ]
-        ]);
+        // create a centre
+        $centre = [
+            'category' => '1',
+            'type' => '1',
+            'name' => 'Ingraham Institute',
+            'code' => 'INGHZ221',
+            'address' => 'Ghaziabad',
+            'country' => '99',
+            'state' => '1505',
+            'city' => 'Ghaziabad',
+            'contact_person' => 'Pramod Singh',
+            'mobile' => '9876543210',
+            'phone' => '12023456',
+            'fax' => '',
+            'email' => 'centre@lapt.org',
+            'description' => '',
+            'website' => 'centre.lapt.org',
+            'facebook' => 'facebook',
+            'twitter' => '',
+            'instagram' => '',
+            'linkedin' => '',
+            'password' => '',
+            'chairman_signature' => '',
+            'examiner_signature' => '',
+            'center_logo' => ''
+        ];
 
-        // Multiple data seeding
-        $centres->map(fn($item) => Centre::create($item));
+        // centre data seeding
+        Centre::create($centre);
     }
 }
