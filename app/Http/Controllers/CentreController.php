@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CentreRequest;
 use App\Models\Centre;
-use Illuminate\Http\Request;
 
 class CentreController extends Controller
 {
@@ -27,7 +27,7 @@ class CentreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req)
+    public function store(CentreRequest $req)
     {
         Centre::create($req->all());
         return back()->with('message', 'Centre created successfully.');
@@ -52,7 +52,7 @@ class CentreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $req, Centre $centre)
+    public function update(CentreRequest $req, Centre $centre)
     {
         $centre->update($req->all());
         return back()->with('message', 'Centre updated successfully.');
