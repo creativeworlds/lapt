@@ -34,7 +34,7 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-800">{{ $student->name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $student->email }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-600">{{ $student->phone_number }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">{{ $student->mobile }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $student->centre->name }}</td>
                                 <td class="px-6 py-4 text-sm text-right space-x-2">
 

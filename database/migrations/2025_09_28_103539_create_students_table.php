@@ -9,10 +9,24 @@ return new class extends Migration {
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone_number');
             $table->foreignId('centre_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->string('care_of');
+            $table->string('sex');
+            $table->string('session');
+            $table->string('photo')->nullable();
+            $table->string('id_card')->nullable();
+            $table->string('education_proof')->nullable();
+            $table->string('other_doc')->nullable();
+            $table->string('qualification');
+            $table->string('telephone')->nullable();
+            $table->string('email');
+            $table->string('mobile');
+            $table->string('fax')->nullable();
+            $table->text('address_line')->nullable();
+            $table->text('details')->nullable();
+            $table->string('password');
             $table->timestamps();
         });
     }

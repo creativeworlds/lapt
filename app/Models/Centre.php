@@ -31,4 +31,9 @@ class Centre extends Model
         'examiner_signature',
         'center_logo',
     ];
+
+    public function courses()
+    {
+        return $this->hasmany(Course::class);
+    }
 }

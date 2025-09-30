@@ -12,29 +12,29 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        // multiple row create
-        $students = collect([
-            [
-                'name' => 'Student 1',
-                'email' => 'student1@lapt.org',
-                'phone_number' => '9876543210',
-                'centre_id'=> 1,
-            ],
-            [
-                'name' => 'Student 2',
-                'email' => 'student2@lapt.org',
-                'phone_number' => '9876123450',
-                'centre_id'=> 2,
-            ],
-            [
-                'name' => 'Student 3',
-                'email' => 'student3@lapt.org',
-                'phone_number' => '1234560987',
-                'centre_id'=> 3,
-            ]
-        ]);
+        // create a student
+        $student = [
+            'centre_id' => 1,
+            'course_id' => 1,
+            'name' => 'John Doe',
+            'care_of' => 'Jane Doe',
+            'sex' => 'male',
+            'session' => '2025-A',
+            'photo'=> '',
+            'id_card' => '',
+            'education_proof' => '',
+            'other_doc' => '',
+            'qualification' => 'B.A.',
+            'telephone' => '',
+            'email' => 'john@example.com',
+            'mobile' => '9876543210',
+            'fax' => '',
+            'address_line' => '123 Main Street, New Delhi',
+            'details' => 'Sample student enrolled in 2025 batch.',
+            'password' => '',
+        ];
 
         // Multiple data seeding
-        $students->map(fn($item) => Student::create($item));
+        Student::create($student);
     }
 }

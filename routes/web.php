@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('centres', CentreController::class)->middleware('auth');
+Route::resource('centres.students', StudentController::class)->middleware('auth');
+
+
 Route::resource('courses', CourseController::class)->middleware('auth');
 Route::resource('students', StudentController::class)->middleware('auth');
 Route::post('student/{student}/courses-allotment', [StudentController::class, 'courseAllotment'])->name('student.courseAllotment')->middleware('auth');

@@ -21,10 +21,9 @@ class StudentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Centre $centre)
     {
-        $centres = Centre::all();
-        return view('students.create', compact('centres'));
+        return view('students.create', compact('centre'));
     }
 
     /**
@@ -78,7 +77,8 @@ class StudentController extends Controller
         return back()->with('message', 'Student course allotted successfully.');
     }
 
-    public function getStudentCourses(Student $student) {
+    public function getStudentCourses(Student $student)
+    {
         return $student->courses()->get();
     }
 }

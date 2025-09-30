@@ -29,7 +29,7 @@
                     <tbody class="divide-y divide-gray-200">
                         @foreach($centres as $centre)
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-800">{{ $centre->name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-800"><a href="{{ route('centres.students.create', $centre) }}">{{ $centre->name }}</a></td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $centre->code }}</td>
                                 <td class="px-6 py-4 text-sm text-right space-x-2">
                                     <!-- Edit button -->

@@ -18,16 +18,6 @@ class CourseSeeder extends Seeder
                 'centre_id' => 1,
                 'name' => 'BCA',
                 'code' => '001001',
-            ],
-            [
-                'centre_id' => 2,
-                'name' => 'B.sc',
-                'code' => '002003',
-            ],
-            [
-                'centre_id' => 3,
-                'name' => 'B.A.',
-                'code' => '908678',
             ]
         ]);
 
