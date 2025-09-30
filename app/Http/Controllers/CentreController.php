@@ -66,4 +66,8 @@ class CentreController extends Controller
         $centre->delete();
         return back()->with('message', 'Centre deleted successfully.');
     }
+
+    public function getCentreCourses(Centre $centre) {
+       return $centre->courses;
+    }
 }

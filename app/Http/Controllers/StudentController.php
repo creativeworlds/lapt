@@ -23,7 +23,8 @@ class StudentController extends Controller
      */
     public function create(Centre $centre)
     {
-        return view('students.create', compact('centre'));
+        $centres = Centre::all();
+        return view('students.create', compact('centre', 'centres'));
     }
 
     /**

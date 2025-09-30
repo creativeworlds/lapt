@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('centres', CentreController::class)->middleware('auth');
 Route::resource('centres.students', StudentController::class)->middleware('auth');
+Route::get('centres/{centre}/courses', [CentreController::class, 'getCentreCourses'])->middleware('auth')->name('centre.courses');
 
 
 Route::resource('courses', CourseController::class)->middleware('auth');

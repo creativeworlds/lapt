@@ -25,10 +25,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Service Provider</label>
-                        <select name="centre_id"
+                        <select name="centre_id" id="centreId" onchange="getCourses(this.value)"
                             class="w-full bg-gray-50 border border-gray-200 rounded-md p-3 text-sm">
                             <option value="">-- Select Centre --</option>
-                            <option value="{{ $centre->id }}" selected>{{ $centre->city }} ({{ $centre->name }})
+                            @if (isset($centre->id))
+                                <option value="{{ $centre->id }}" selected>
+                                    {{ $centre->city }} ({{ $centre->name }})
+                                </option>
+                            @else
+                                @foreach ($centres as $c)
+                                    <option value="{{ $c->id }}" @selected(old('centre_id') == $c->id)>
+                                        {{ $c->city }} ({{ $c->name }})
+                                    </option>
+                                @endforeach
+                            @endif
                             </option>
                         </select>
                     </div>
@@ -36,12 +46,15 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Select Course</label>
                         <select name="course_id" class="w-full bg-gray-50 border border-gray-200 rounded-md p-3 text-sm"
-                            required>
+                            required id="courseId">
                             <option value="">-- Select Course --</option>
-                            @foreach($centre->courses as $course)
-                                <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>
-                                    {{ $course->code }} {{ $course->name }}</option>
-                            @endforeach
+                            @if (isset($centre->id))
+                                @foreach($centre->courses as $course)
+                                    <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>
+                                        {{ $course->code }} {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
@@ -183,4 +196,22 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const getCourses = async (centreId) => {
+            const courseSelect = document.getElementById('courseId');
+            const courses = await (await fetch(`/centres/${centreId}/courses`)).json();
+
+            // Clear old options
+            courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+
+            // Add new options
+            courses.forEach(course => {
+                let opt = document.createElement('option');
+                opt.value = course.id;
+                opt.textContent = `${course.code} ${course.name}`;
+                courseSelect.appendChild(opt);
+            });
+        }
+    </script>
 </x-app-layout>
