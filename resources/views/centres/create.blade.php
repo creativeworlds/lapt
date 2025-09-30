@@ -145,7 +145,7 @@
                     </div>
                     <div>
                         <label class="block font-semibold text-sm mb-1">Website</label>
-                        <input type="url" name="website" value="{{ old('website') }}"
+                        <input type="text" name="website" value="{{ old('website') }}"
                             class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                 </div>
@@ -188,7 +188,7 @@
                     <div>
                         <label class="block font-semibold text-sm mb-1">Upload Chairman Signature</label>
                         <input type="file" name="chairman_signature"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                 </div>
 
@@ -196,12 +196,12 @@
                     <div>
                         <label class="block font-semibold text-sm mb-1">Upload Examiner Signature</label>
                         <input type="file" name="examiner_signature"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="block font-semibold text-sm mb-1">Upload Centre Logo</label>
                         <input type="file" name="centre_logo"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                 </div>
 

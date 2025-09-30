@@ -4,7 +4,8 @@
             {{ __('Centres') }}
         </h2>
 
-        <a href="{{ route('centres.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <a href="{{ route('centres.create') }}"
+            class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             Add Centre
         </a>
     </x-slot>
@@ -29,19 +30,29 @@
                     <tbody class="divide-y divide-gray-200">
                         @foreach($centres as $centre)
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-800"><a href="{{ route('centres.students.create', $centre) }}">{{ $centre->name }}</a></td>
+                                <td class="px-6 py-4 text-sm text-gray-800">
+                                    <a href="{{ route('centres.students.create', $centre) }}">{{ $centre->name }}</a></td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $centre->code }}</td>
                                 <td class="px-6 py-4 text-sm text-right space-x-2">
+
+                                    <a href="{{ route('centres.students.create', $centre) }}"
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                        Student Enrollment
+                                    </a>
                                     <!-- Edit button -->
-                                    <a href="{{ route('centres.edit', $centre) }}" class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                    <a href="{{ route('centres.edit', $centre) }}"
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                                         Edit
                                     </a>
 
                                     <!-- Delete button -->
-                                    <form action="{{ route('centres.destroy', $centre) }}" method="post" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this centre?');">
+                                    <form action="{{ route('centres.destroy', $centre) }}" method="post"
+                                        class="inline-block"
+                                        onsubmit="return confirm('Are you sure you want to delete this centre?');">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
+                                        <button type="submit"
+                                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
                                             Delete
                                         </button>
                                     </form>

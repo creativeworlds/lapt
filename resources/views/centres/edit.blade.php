@@ -10,7 +10,7 @@
         </a>
     </x-slot>
 
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="px-4 sm:px-6 lg:px-8 py-8">
         <h1 class="text-2xl font-bold mb-6">Edit Centre</h1>
 
         <div class="bg-white p-6 shadow-md rounded-lg">
@@ -22,22 +22,187 @@
                     <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('message') }}</p>
                 @endif
 
-                <!-- Centre Name -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700">Centre Category</label>
+                        <select name="category" id="category" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">-- Select Category --</option>
+                            <option value="1" @selected($centre->category == '1')>Accredited Training Partners</option>
+                            <option value="2" @selected($centre->category == '2')>Assessment Centres</option>
+                            <option value="3" @selected($centre->category == '3')>Corporate Partners</option>
+                            <option value="4" @selected($centre->category == '4')>LAPT APL Partners</option>
+                            <option value="5" @selected($centre->category == '5')>LAPT Beauty Centres</option>
+                            <option value="6" @selected($centre->category == '6')>LAPT Aviation Centres</option>
+                            <option value="7" @selected($centre->category == '7')>LAPT Culinary Centres</option>
+                            <option value="8" @selected($centre->category == '8')>LAPT HM Centres</option>
+                            <option value="9" @selected($centre->category == '9')>LAPT IT Centres</option>
+                            <option value="10" @selected($centre->category == '10')>LAPT Misc Centres</option>
+                            <option value="11" @selected($centre->category == '11')>LAPT Inactive Centres</option>
+                        </select>
+                        @error('category')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="type" class="block text-sm font-medium text-gray-700">Centre Type</label>
+                        <select name="type" id="type" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">-- Select Type --</option>
+                            <option value="1" @selected($centre->type == '1')>Testing Centre</option>
+                            <option value="2" @selected($centre->type == '2')>Partner Centre</option>
+                        </select>
+                        @error('type')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Centre Name</label>
+                        <input type="text" name="name" id="name" value="{{ $centre->name  }}" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        @error('name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="code" class="block text-sm font-medium text-gray-700">Centre Code</label>
+                        <input type="text" name="code" id="code" value="{{ $centre->code  }}" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        @error('code')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Centre Name</label>
-                    <input type="text" name="name" id="name" value="{{ $centre->name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    @error('name')
+                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                    <textarea name="address" id="address" required
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">{{ $centre->address  }}</textarea>
+                    @error('address')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Centre Code -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Country</label>
+                        <select name="country" required
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                             <option value="">-- Select Country --</option>
+                            <option value="1" @selected($centre->country == '1')>India</option>
+                            <option value="2" @selected($centre->country == '2')>USA</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">State</label>
+                        <select name="state" required
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">-- Select State --</option>
+                            <option value="1" @selected($centre->state == '1')>Uttar Pradesh</option>
+                            <option value="2" @selected($centre->state == '2')>Uttrakhand</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">City</label>
+                        <input type="text" name="city" value="{{ $centre->city }}" required
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Contact Person</label>
+                        <input type="text" name="contact_person" value="{{ $centre->contact_person }}" required
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Mobile</label>
+                        <input type="text" name="mobile" value="{{ $centre->mobile }}" required
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Phone</label>
+                        <input type="text" name="phone" value="{{ $centre->phone }}"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Fax</label>
+                        <input type="text" name="fax" value="{{ $centre->fax }}"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Email</label>
+                        <input type="email" name="email" value="{{ $centre->email }}" required
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Website</label>
+                        <input type="text" name="website" value="{{ $centre->website }}"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
                 <div>
-                    <label for="code" class="block text-sm font-medium text-gray-700">Centre Code</label>
-                    <input type="text" name="code" id="code" value="{{ $centre->code }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    @error('code')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <label class="block font-semibold text-sm mb-1">Description</label>
+                    <textarea name="description" rows="3"
+                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">{{ $centre->description }}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Facebook</label>
+                        <input type="text" name="facebook" value="{{ $centre->facebook }}"
+                           
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
+                        <label class="block font-semibold text-sm mt-3">Instagram</label>
+                        <input type="text" name="instagram" value="{{ $centre->instagram }}"
+                           
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Twitter</label>
+                        <input type="text" name="twitter" value="{{ $centre->twitter }}"
+                       
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
+                        <label class="block font-semibold text-sm mt-3">LinkedIn</label>
+                        <input type="text" name="linkedin" value="{{ $centre->linkedin }}"
+                         
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Password</label>
+                        <input type="password" name="password" required 
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Upload Chairman Signature</label>
+                        <input type="file" name="chairman_signature"
+                            class="p-3  w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Upload Examiner Signature</label>
+                        <input type="file" name="examiner_signature"
+                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-sm mb-1">Upload Centre Logo</label>
+                        <input type="file" name="centre_logo"
+                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
                 </div>
 
                 <!-- Action Buttons -->
