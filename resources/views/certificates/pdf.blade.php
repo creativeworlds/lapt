@@ -83,19 +83,19 @@
             <h2>Certificate Details</h2>
 
             <div class="row"><span class="label">Certificate #:</span> <span class="value">3</span></div>
-            <div class="row"><span class="label">Student:</span> <span class="value"><a href="#">Student 3</a></span>
+            <div class="row"><span class="label">Student:</span> <span class="value">{{ $certificate->student->name }}</span>
             </div>
-            <div class="row"><span class="label">Phone:</span> <span class="value">1234560987</span></div>
-            <div class="row"><span class="label">Course:</span> <span class="value">B.A. <span
+            <div class="row"><span class="label">Phone Number:</span> <span class="value">{{ $certificate->student->phone_number }}</span></div>
+            <div class="row"><span class="label">Course:</span> <span class="value">{{ $certificate->course->name }} <span
                         style="color:#888;font-size:12px;">(908678)</span></span></div>
-            <div class="row"><span class="label">Issue Date:</span> <span class="value">29 Sep 2025</span></div>
-            <div class="row"><span class="label">Grade:</span> <span class="value">B</span></div>
-            <div class="row"><span class="label">Status:</span> <span class="value">Pass</span></div>
+            <div class="row"><span class="label">Issue Date:</span> <span class="value">{{ optional($certificate->created_at)->format('d M Y') ?? '—' }}</span></div>
+            <div class="row"><span class="label">Grade:</span> <span class="value">{{ $certificate->grade }}</span></div>
+            <div class="row"><span class="label">Status:</span> <span class="value">{{ $certificate->status }}</span></div>
         </div>
 
         <!-- Right side: QR code -->
         <div class="qr">
-            {{ $qrCode }}
+            <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code" height="200" width="200">
         </div>
     </div>
 
