@@ -15,22 +15,8 @@ class CertificateSeeder extends Seeder
         // multiple row create
         $certificates = collect([
             [
-                'student_id' => 1,
                 'course_id' => 1,
-                'status' => 'pass',
-                'Grade' => 'A',
-            ],
-            [
-                'student_id' => 2,
-                'course_id' => 2,
-                'status' => 'fail',
-                'Grade' => 'D',
-            ],
-            [
-                'student_id' => 3,
-                'course_id' => 3,
-                'status' => 'pass',
-                'Grade' => 'B',
+                'student_id' => 1,
             ]
         ]);
 

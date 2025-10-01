@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Centre;
-use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -41,8 +40,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $courses = Course::whereCentreId($student->centre_id)->get();
-        return view('students.show', compact('courses', 'student'));
+        //
     }
 
     /**
@@ -70,16 +68,5 @@ class StudentController extends Controller
     {
         $student->delete();
         return back()->with('message', 'Student deleted successfully.');
-    }
-
-    public function courseAllotment(Student $student, Request $req)
-    {
-        $student->courses()->syncWithoutDetaching([$req->course_id]);
-        return back()->with('message', 'Student course allotted successfully.');
-    }
-
-    public function getStudentCourses(Student $student)
-    {
-        return $student->courses()->get();
     }
 }

@@ -25,11 +25,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::resource('centres', CentreController::class)->middleware('auth');
 Route::resource('centres.students', StudentController::class)->middleware('auth');
 Route::get('centres/{centre}/courses', [CentreController::class, 'getCentreCourses'])->middleware('auth')->name('centre.courses');
-
-
 Route::resource('courses', CourseController::class)->middleware('auth');
 Route::resource('students', StudentController::class)->middleware('auth');
-Route::post('student/{student}/courses-allotment', [StudentController::class, 'courseAllotment'])->name('student.courseAllotment')->middleware('auth');
+Route::resource('students.certificates', CertificateController::class)->middleware('auth');
 Route::resource('certificates', CertificateController::class)->middleware('auth');
-Route::get('student/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('student.courses')->middleware('auth');
-Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'generatePdf'])->name('certificate.pdf')->middleware('auth');

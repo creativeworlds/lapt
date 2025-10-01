@@ -25,8 +25,6 @@
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Student Name</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Centre Name/Code</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Course Name/Code</th>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Grade</th>
                             <th class="px-6 py-3 text-right text-sm font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
@@ -35,17 +33,17 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-800">{{ $certificate->student->name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $certificate->student->centre->name }} /
-                                    {{ $certificate->student->centre->code }}</td>
+                                    {{ $certificate->student->centre->code }}
+                                </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $certificate->course->name }} /
-                                    {{ $certificate->course->code }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-800">{{ ucfirst($certificate->status) }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-800">{{ $certificate->grade }}</td>
+                                    {{ $certificate->course->code }}
+                                </td>
                                 <td class="px-6 py-4 text-sm text-right space-x-2">
-                                    
+
                                     <!-- View button -->
-                                    <a href="{{ route('certificates.show', $certificate) }}"
+                                    <a href="#"
                                         class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                                        View
+                                        View Admit Card
                                     </a>
                                 </td>
                             </tr>

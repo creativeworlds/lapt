@@ -31,9 +31,9 @@ class CertificateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req)
+    public function store(Request $req, Student $student)
     {
-        Certificate::create($req->all());
+        Certificate::create(['student_id'=> $student->id, 'course_id'=> $student->course->id]);
         return back()->with('message', 'Certificate created successfully.');
     }
 
