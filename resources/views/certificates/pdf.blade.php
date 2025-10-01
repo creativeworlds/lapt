@@ -85,12 +85,10 @@
             <div class="row"><span class="label">Certificate #:</span> <span class="value">3</span></div>
             <div class="row"><span class="label">Student:</span> <span class="value">{{ $certificate->student->name }}</span>
             </div>
-            <div class="row"><span class="label">Phone Number:</span> <span class="value">{{ $certificate->student->phone_number }}</span></div>
+            <div class="row"><span class="label">Phone Number:</span> <span class="value">{{ $certificate->student->mobile }}</span></div>
             <div class="row"><span class="label">Course:</span> <span class="value">{{ $certificate->course->name }} <span
                         style="color:#888;font-size:12px;">(908678)</span></span></div>
             <div class="row"><span class="label">Issue Date:</span> <span class="value">{{ optional($certificate->created_at)->format('d M Y') ?? '—' }}</span></div>
-            <div class="row"><span class="label">Grade:</span> <span class="value">{{ $certificate->grade }}</span></div>
-            <div class="row"><span class="label">Status:</span> <span class="value">{{ $certificate->status }}</span></div>
         </div>
 
         <!-- Right side: QR code -->

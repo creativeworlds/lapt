@@ -41,15 +41,21 @@
                             </td>
                             <td class="px-6 py-4 text-sm text-right space-x-2">
 
-                                <!-- Certificate Button -->
-                                <form action="{{ route('students.certificates.store', $student) }}" method="post"
-                                    class="inline-block">
-                                    @csrf
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                                        Student Certificated
-                                    </button>
-                                </form>
+                                @if(!isset($student->certificate->id))
+                                    <!-- Certificate Button -->
+                                    <form action="{{ route('students.certificates.store', $student) }}" method="post"
+                                        class="inline-block">
+                                        @csrf
+                                        <button type="submit"
+                                            class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                            Student Certificated
+                                        </button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('certificate.pdf', $student->certificate->id) }}"
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                                        target="_blank">Gentare Admit Card</a>
+                                @endif
 
                                 <!-- Delete button -->
                                 <form action="{{ route('students.destroy', $student) }}" method="post" class="inline-block"
