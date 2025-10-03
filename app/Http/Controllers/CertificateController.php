@@ -6,6 +6,7 @@ use App\Models\Certificate;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use setasign\Fpdi\Fpdi;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CertificateController extends Controller
@@ -33,7 +34,7 @@ class CertificateController extends Controller
      */
     public function store(Request $req, Student $student)
     {
-        Certificate::create(['student_id'=> $student->id, 'course_id'=> $student->course->id]);
+        Certificate::create(['student_id' => $student->id, 'course_id' => $student->course->id]);
         return back()->with('message', 'Certificate created successfully.');
     }
 
