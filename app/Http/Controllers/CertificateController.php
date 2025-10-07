@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificate;
 use App\Models\Student;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Fpdi;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -45,8 +43,8 @@ class CertificateController extends Controller
      */
     public function show(Certificate $certificate)
     {
-        $qrCode = QrCode::size(200)->generate(json_encode($certificate->student->only(['name', 'email', 'phone_number'])));
-        return view('certificates.show', compact('certificate', 'qrCode'));
+        // $qrCode = QrCode::size(200)->generate(json_encode($certificate->student->only(['name', 'email', 'phone_number'])));
+        // return view('certificates.show', compact('certificate', 'qrCode'));
     }
 
     /**
@@ -75,13 +73,6 @@ class CertificateController extends Controller
 
     public function generatePdf(Certificate $certificate)
     {
-        // // Generate QR as PNG with GD (works in PDF)
-        // $png = QrCode::format('png')->size(200)->generate(json_encode($certificate->student->only(['name', 'email', 'phone_number'])));
-        // $qrCode = base64_encode($png);
-
-        // $pdf = Pdf::loadView('certificates.pdf', compact('certificate', 'qrCode'));
-        // return $pdf->stream("{$certificate->student->name}_{$certificate->course->name}.pdf");
-
         // Load certificate with relations (adjust to your models)
         $certificate = Certificate::with(['student.centre', 'course'])->findOrFail($certificate->id);
 
@@ -106,18 +97,11 @@ class CertificateController extends Controller
         $black = imagecolorallocate($image, 0, 0, 0);
         $white = imagecolorallocate($image, 255, 255, 255);
 
-        // Text positions & sizes
-        $centerTitleFontSize = 40;
-        $nameFontSize = 30;
-        $fatherNameFontSize = 30;
-        $certificateTitleFontSize = 30;
-
-        $width = 500;
+        $width = 340;
 
         // Example positions (x = left offset, y = baseline)
         $x = 396;
         $y = 50;
-
 
         $words = explode(' ', $certificate->student->centre->name);
 
@@ -174,18 +158,15 @@ class CertificateController extends Controller
         imagettftext($image, $certificateTitleFontSize, 0, 390, 375, $black, $fontPath, $certificate->course->name);
         imagettftext($image, 30, 0, 390, 430, $black, $fontPath, $certificate->student->session);
 
-        // Prepare output directory
-        $outDir = public_path('student_id_cards');
-
-        // Make sure directory exists
-        Storage::makeDirectory($outDir);
+        // make student id cards directory
+        Storage::disk('public')->makeDirectory('student_id_cards');
 
         // Sanitize filename
         $safeName = Str::slug($certificate->student->name ?: 'student', '_');
         $timestamp = date('y_m_d_H_i_s');
         $id = $certificate->student->id ?? '0';
         $imageName = "{$safeName}_{$timestamp}_{$id}.jpg";
-        $outputPath = $outDir . DIRECTORY_SEPARATOR . $imageName;
+        $outputPath = public_path('storage/student_id_cards/' . $imageName);
 
         // $photo stores relative path like "student_images/abc.jpg" or null
         $photo = $certificate->student->photo;
@@ -261,25 +242,20 @@ class CertificateController extends Controller
 
         $certificateid = $certificate->id;
 
-        // Make sure directory exists
-        $target_dir = public_path('certificates');
-
-        Storage::makeDirectory($target_dir);
+        // make student certificates directory
+        Storage::disk('public')->makeDirectory('certificates');
 
         $cname = 'admit';
-
         $newFileName = "{$certificate->course_id}_{$certificate->student_id}_{$certificateid}_{$cname}.pdf";
         $newFileName = strtolower($newFileName);
-        $target_path = $target_dir . DIRECTORY_SEPARATOR . $newFileName;
+        $target_path = public_path('storage/certificates/' . $newFileName);
 
-        // Make sure directory exists
-        $target_png_dir = public_path('certificates/png');
-
-        Storage::makeDirectory($target_png_dir);
+        // make student certificates png directory
+        Storage::disk('public')->makeDirectory('certificates/png');
 
         $newFileNamePNG = "{$certificate->course_id}_{$certificate->student_id}_{$certificateid}_{$cname}.png";
         $newFileNamePNG = strtolower($newFileNamePNG);
-        $target_path_png = $target_png_dir . DIRECTORY_SEPARATOR . $newFileNamePNG;
+        $target_path_png = public_path('storage/certificates/png/' . $newFileNamePNG);
 
         if (file_exists($target_path_png)) {
             unlink($target_path_png);
@@ -291,9 +267,53 @@ class CertificateController extends Controller
 
         $pdf->Output($target_path, 'F');
 
+        // gentare url for qrcode
+        $f = str_replace(["{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_", '.pdf'], '', $newFileName);
+        $cname = explode('_', $f);
+        $cname = $cname[count($cname) - 1];
+
+        // $urlFile = $url = "/admin/certificates/$file";
+
+        $slug = "{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_{$cname}";
+        $slug = str_rot13($slug);
+        $slug = rtrim(strtr(base64_encode($slug), '+/', '-_'), '=');
+        $url = url("/verification.php?verify=" . $slug);
+
+        // apply qrcode inside admit card
+        $pdf = new Fpdi();
+        $pdf->setSourceFile($target_path);
+        $tplIdx = $pdf->importPage(1);
+        $size = $pdf->getTemplateSize($tplIdx);
+        $pdf->AddPage();
+        $pdf->useTemplate($tplIdx, null, null, $size['width'], $size['height'], true);
+
+        $fileName = basename($target_path);
+        if (preg_match('/marksheet|admit|letter|certificate/', $fileName) != true) {
+            die('Error! matching file name not found ...');
+        }
+
+        $qrpngfile = "qrcode_" . time() . ".png";
+
+        // make student qrcode directory
+        Storage::disk('public')->makeDirectory('qrcode');
+        $qrpng_path = public_path('storage/qrcode/' . $qrpngfile);
+
+        \QRcode::png($url, $qrpng_path);
+
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('arial', '', 12);
+        if (preg_match('/admit/i', $fileName)) {
+            $pdf->Image($qrpng_path, 40, 41.5, 9.8);
+        } else {
+            die('Error! matching file name not found ...');
+        }
+
+        @unlink($qrpngfile);
+        @unlink($target_path);
+        $pdf->Output("F", $target_path);
+
         imagedestroy($image);
 
-        // Return as download (or you can stream inline with response()->file)
-        // return response()->download($outputPath);
+        return back()->with('qrMessage', 'QR code applied to admit card successfully ');
     }
 }

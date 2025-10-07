@@ -17,6 +17,10 @@
             <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('message') }}</p>
         @endif
 
+        @if(session('qrMessage'))
+            <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('qrMessage') }}</p>
+        @endif
+
         <div class="overflow-x-auto bg-white shadow-md rounded-lg">
             <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -34,7 +38,7 @@
                     @foreach($students as $student)
                         <tr>
                             <td class="px-6 py-4 text-sm text-gray-800">
-                                 <img src="{{ asset('storage/'.$student->photo) }}" alt="photo">
+                                <img src="{{ asset('storage/' . $student->photo) }}" alt="photo">
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800">{{ $student->name }}</td>
                             <td class="px-6 py-4 text-sm text-gray-600">{{ $student->certificate->id ?? '' }}</td>
@@ -57,8 +61,8 @@
                                     </form>
                                 @else
                                     <a href="{{ route('certificate.pdf', $student->certificate->id) }}"
-                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                                        >Gentare Admit Card</a>
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">Gentare Admit
+                                        Card</a>
                                 @endif
 
                                 <!-- Delete button -->
