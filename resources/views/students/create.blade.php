@@ -15,7 +15,7 @@
         <h1 class="text-2xl font-bold mb-6">Add New Student</h1>
 
         <div class="bg-white p-6 shadow-md rounded-lg">
-            <form action="{{ route('students.store') }}" method="post" class="space-y-6">
+            <form action="{{ route('students.store') }}" method="post" class="space-y-6" enctype="multipart/form-data">
                 @csrf
 
                 @if(session('message'))
@@ -94,7 +94,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Upload Photo</label>
-                        <input name="photo" type="file" accept="image/*" class="mt-1 w-full text-sm text-gray-600">
+                        <input type="file" name="photo" accept="image/*" class="mt-1 w-full text-sm text-gray-600">
                     </div>
 
                     <div>

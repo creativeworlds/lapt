@@ -21,6 +21,7 @@
             <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Photo</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Certificate ID</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
@@ -32,6 +33,9 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach($students as $student)
                         <tr>
+                            <td class="px-6 py-4 text-sm text-gray-800">
+                                 <img src="{{ asset('storage/'.$student->photo) }}" alt="photo">
+                            </td>
                             <td class="px-6 py-4 text-sm text-gray-800">{{ $student->name }}</td>
                             <td class="px-6 py-4 text-sm text-gray-600">{{ $student->certificate->id ?? '' }}</td>
                             <td class="px-6 py-4 text-sm text-gray-600">{{ $student->email }}</td>
@@ -54,7 +58,7 @@
                                 @else
                                     <a href="{{ route('certificate.pdf', $student->certificate->id) }}"
                                         class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                                        target="_blank">Gentare Admit Card</a>
+                                        >Gentare Admit Card</a>
                                 @endif
 
                                 <!-- Delete button -->
