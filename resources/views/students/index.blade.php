@@ -17,10 +17,6 @@
             <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('message') }}</p>
         @endif
 
-        @if(session('qrMessage'))
-            <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('qrMessage') }}</p>
-        @endif
-
         <div class="overflow-x-auto bg-white shadow-md rounded-lg">
             <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
                 <thead class="bg-gray-50">
