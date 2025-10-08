@@ -236,7 +236,7 @@ class AdmitCardService
             die('Error! matching file name not found ...');
         }
 
-        @unlink($qrpngfile);
+        @unlink($qrpng_path);
         @unlink($target_path);
         $pdf->Output("F", $target_path);
 

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Certificate;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
 
@@ -203,5 +202,94 @@ class RegistrationLetterService
 
         // generate registration letter image
         imagejpeg($image, $outputPath);
+
+        // get registration letter image height and width
+        list($imageWidth, $imageHeight) = getimagesize($outputPath);
+
+        $pdf = new \FPDF();
+        $pdf->AddPage('P', [$imageWidth, $imageHeight]);
+
+        $pdf->Image($outputPath, 0, 0, $imageWidth, $imageHeight);
+
+        $certificateid = $certificate->id;
+
+        // make student certificates directory
+        Storage::disk('public')->makeDirectory('certificates');
+
+        $cname = 'letter';
+        $newFileName = "{$certificate->course_id}_{$certificate->student_id}_{$certificateid}_{$cname}.pdf";
+        $newFileName = strtolower($newFileName);
+        $target_path = public_path('storage/certificates/' . $newFileName);
+
+        // make student certificates png directory
+        Storage::disk('public')->makeDirectory('certificates/png');
+
+        $newFileNamePNG = "{$certificate->course_id}_{$certificate->student_id}_{$certificateid}_{$cname}.png";
+        $newFileNamePNG = strtolower($newFileNamePNG);
+        $target_path_png = public_path('storage/certificates/png/' . $newFileNamePNG);
+
+        if (file_exists($target_path_png)) {
+            unlink($target_path_png);
+        }
+
+        if (file_exists($target_path)) {
+            unlink($target_path);
+        }
+
+        // registration image convert to pdf
+        $pdf->Output($target_path, "F");
+
+        // gentare url for qrcode
+        $f = str_replace(["{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_", '.pdf'], '', $newFileName);
+        $cname = explode('_', $f);
+        $cname = $cname[count($cname) - 1];
+
+        // $urlFile = $url = "/admin/certificates/$file";
+
+        $slug = "{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_{$cname}";
+        $slug = str_rot13($slug);
+        $slug = rtrim(strtr(base64_encode($slug), '+/', '-_'), '=');
+        $url = url("/verification.php?verify=" . $slug);
+
+        // apply qrCode inside registration letter
+        $pdf = new Fpdi();
+        $pdf->setSourceFile($target_path);
+        $tplIdx = $pdf->importPage(1);
+        $size = $pdf->getTemplateSize($tplIdx);
+        $pdf->AddPage();
+        $pdf->useTemplate($tplIdx, null, null, $size['width'], $size['height'], true);
+
+        $fileName = basename($target_path);
+        if (preg_match('/marksheet|admit|letter|certificate/', $fileName) != true) {
+            die('Error! matching file name not found ...');
+        }
+
+        $qrpngfile = "qrcode_" . time() . ".png";
+
+        // make student qrcode directory
+        Storage::disk('public')->makeDirectory('qrcode');
+        $qrpng_path = public_path('storage/qrcode/' . $qrpngfile);
+
+        \QRcode::png($url, $qrpng_path);
+
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('arial', '', 1);
+
+        if (preg_match('/letter/i', $fileName)) {
+            $pdf->Image($qrpng_path, 50, 50, 180, 180);
+            $pdf->SetFont('arial', '', 50);
+            $pdf->SetXY(70, 50);
+            $pdf->Write(0, "Scan to Verify");
+
+        } else {
+            die('Error! matching file name not found ...');
+        }
+
+        // _msg('QR code applied to registration letter successfully ');
+        @unlink($qrpng_path);
+        @unlink($target_path);
+        $pdf->Output("F", $target_path);
+
+        imagedestroy($image);
     }
 }
