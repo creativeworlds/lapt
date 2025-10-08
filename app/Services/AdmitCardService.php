@@ -9,7 +9,7 @@ use setasign\Fpdi\Fpdi;
 
 class AdmitCardService
 {
-    public static function generate(Certificate $certificate)
+    public function generate(Certificate $certificate)
     {
         /** Image Template Path */
         $templatePath = public_path('images/id_card_template.jpeg');

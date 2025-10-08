@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Certificate;
 use App\Models\Student;
 use App\Services\AdmitCardService;
+use App\Services\RegistrationLetterService;
 use Illuminate\Http\Request;
 
 class CertificateController extends Controller
@@ -69,9 +70,10 @@ class CertificateController extends Controller
         //
     }
 
-    public function generatePdf(Certificate $certificate)
+    public function generatePdf(Certificate $certificate, AdmitCardService $admitCard, RegistrationLetterService $registrationLetter)
     {
-        AdmitCardService::generate($certificate);
+        $admitCard->generate($certificate);
+        $registrationLetter->generate($certificate);
         return back()->with('message', 'Genrate admit card successfully.');
     }
 }
