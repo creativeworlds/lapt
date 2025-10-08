@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\EmailHelper;
 use App\Mail\DocumentsIssued;
 use App\Models\Certificate;
 use App\Models\Student;
 use App\Services\AdmitCardService;
 use App\Services\RegistrationLetterService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class CertificateController extends Controller
 {
@@ -81,8 +81,8 @@ class CertificateController extends Controller
         $registrationLetter = $registrationLetterService->generate($certificate);
 
         // Send Email for Document Issued
-        Mail::to('laptlondon@gmail.com')->send(new DocumentsIssued($certificate, $admitCard, $registrationLetter));
+        EmailHelper::send('laptlondon@gmail.com', [], "Document Issued", new DocumentsIssued($certificate, $admitCard, $registrationLetter), $certificate->student->id, $certificate->student->centre->id);
 
-        return back()->with('message', 'Document Issued successfully.');
+        return back()->with('message', 'Documents issued successfully and sent via Email to the student, center and latp.org');
     }
 }
