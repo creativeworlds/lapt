@@ -34,7 +34,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Libraries/phpqrcode/qrlib.php"
+            "libs/phpqrcode/qrlib.php"
         ]
     },
     "autoload-dev": {
