@@ -241,5 +241,7 @@ class AdmitCardService
         $pdf->Output("F", $target_path);
 
         imagedestroy($image);
+
+        return compact(['url', 'target_path']);
     }
 }

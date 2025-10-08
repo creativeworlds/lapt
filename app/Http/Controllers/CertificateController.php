@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DocumentsIssued;
 use App\Models\Certificate;
 use App\Models\Student;
 use App\Services\AdmitCardService;
 use App\Services\RegistrationLetterService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CertificateController extends Controller
 {
@@ -70,10 +72,17 @@ class CertificateController extends Controller
         //
     }
 
-    public function generatePdf(Certificate $certificate, AdmitCardService $admitCard, RegistrationLetterService $registrationLetter)
+    public function generatePdf(Certificate $certificate, AdmitCardService $admitCardService, RegistrationLetterService $registrationLetterService)
     {
-        $admitCard->generate($certificate);
-        $registrationLetter->generate($certificate);
-        return back()->with('message', 'Genrate admit card successfully.');
+        // genrate admit card
+        $admitCard = $admitCardService->generate($certificate);
+
+        // genrate registration letter
+        $registrationLetter = $registrationLetterService->generate($certificate);
+
+        // Send Email for Document Issued
+        Mail::to('laptlondon@gmail.com')->send(new DocumentsIssued($certificate, $admitCard, $registrationLetter));
+
+        return back()->with('message', 'Document Issued successfully.');
     }
 }

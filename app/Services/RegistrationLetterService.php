@@ -285,11 +285,12 @@ class RegistrationLetterService
             die('Error! matching file name not found ...');
         }
 
-        // _msg('QR code applied to registration letter successfully ');
         @unlink($qrpng_path);
         @unlink($target_path);
         $pdf->Output("F", $target_path);
 
         imagedestroy($image);
+
+        return compact(['url', 'target_path']);
     }
 }
