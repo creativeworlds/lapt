@@ -28,10 +28,6 @@ class DocumentsIssued extends Mailable
     {
         return new Envelope(
             subject: 'Documents Issued',
-            bcc: [
-                $this->certificate->student->email,
-                $this->certificate->student->centre->email,
-            ],
         );
     }
 
@@ -42,6 +38,11 @@ class DocumentsIssued extends Mailable
     {
         return new Content(
             view: 'mail.documents-issued',
+            with: [
+                'certificate' => $this->certificate,
+                'admitCard' => $this->admitCard,
+                'registrationLetter' => $this->registrationLetter
+            ],
         );
     }
 
