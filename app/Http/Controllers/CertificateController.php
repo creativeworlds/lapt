@@ -81,7 +81,7 @@ class CertificateController extends Controller
         $registrationLetter = $registrationLetterService->generate($certificate);
 
         // Send Email for Document Issued
-        Mail::to('spramodgusain@gmail.com')->send(new DocumentsIssued($certificate, $admitCard, $registrationLetter));
+        Mail::to('spramodgusai@gmail.com')->send(new DocumentsIssued($certificate, $admitCard, $registrationLetter));
 
         return back()->with('message', 'Documents issued successfully and sent via Email to the student, center and latp.org');
     }
