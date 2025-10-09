@@ -33,3 +33,9 @@ php artisan migrate --seed
 ```
 
 6. copy <PUBLIC_FOLDER> <ROOT_FOLDER> all files and folders.
+
+
+7. create app storage sort link inside root folder
+```bash 
+ ln -s <PROJECT_FOLDER>/storage/app/public storage
+ ```
