@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('email_logs', function (Blueprint $table) {
             $table->id();
-            $table->json('from');
-            $table->json('to');
-            $table->json('cc');
+            $table->json('gmail_address');
+            $table->json('to_email');
+            $table->json('cc_emails');
             $table->string('subject')->nullable();
-            $table->text('body')->nullable();
+            $table->text('message')->nullable();
             $table->string('status')->default('pending');
             $table->text('error_message')->nullable();
             $table->timestamp('sent_at')->useCurrent();

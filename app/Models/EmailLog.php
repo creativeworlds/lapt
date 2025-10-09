@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class EmailLog extends Model
 {
     protected $casts = [
-        'from' => 'json',
-        'cc' => 'json',
-        'to' => 'json',
+        'gmail_address' => 'json',
+        'cc_emails' => 'json',
+        'to_email' => 'json',
         'sent_at' => 'datetime',
     ];
 
     protected $fillable = [
-        'from',
-        'to',
-        'cc',
+        'gmail_address',
+        'to_email',
+        'cc_emails',
         'subject',
-        'body',
+        'message',
         'status',
         'error_message',
         'sent_at',
