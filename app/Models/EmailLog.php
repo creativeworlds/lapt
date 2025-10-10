@@ -14,6 +14,9 @@ class EmailLog extends Model
     ];
 
     protected $fillable = [
+        'user_id',
+        'student_id',
+        'centre_id',
         'gmail_address',
         'to_email',
         'cc_emails',

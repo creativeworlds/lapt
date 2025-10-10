@@ -15,6 +15,9 @@ return new class extends Migration {
             $table->json('gmail_address');
             $table->json('to_email');
             $table->json('cc_emails');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('centre_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->string('subject')->nullable();
             $table->text('message')->nullable();
             $table->string('status')->default('pending');
