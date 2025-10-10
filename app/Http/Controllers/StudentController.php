@@ -11,10 +11,13 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        $students = Student::all();
-        return view('students.index', compact('students'));
+        $per_page = $req->per_page ?? 20;
+        $search = $req->search ?? '';
+        $totalStudents = Student::count();
+        $students = Student::paginate($per_page);
+        return view('students.index', compact(['students', 'totalStudents', 'per_page', 'search']));
     }
 
     /**
@@ -33,7 +36,7 @@ class StudentController extends Controller
     {
         $photo = $req->file('photo')->store('student_images', 'public');
 
-        Student::create([...$req->all(), ...compact('photo') ]);
+        Student::create([...$req->all(), ...compact('photo')]);
         return back()->with('message', 'Student created successfully.');
     }
 
