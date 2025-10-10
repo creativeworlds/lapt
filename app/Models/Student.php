@@ -32,12 +32,13 @@ class Student extends Model
         return $this->belongsTo(Centre::class);
     }
 
-    public function course()
+    public function courses()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsToMany(Course::class, 'certificates')->withPivot('id');
     }
 
-    public function certificate() {
+    public function certificate()
+    {
         return $this->hasOne(Certificate::class);
     }
 }

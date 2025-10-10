@@ -11,14 +11,9 @@
                                 <h4 for="per_page" class="me-2 mb-0 text-nowrap">Records per page:</h4>
                                 <div class="input-group">
                                     <select class="form-select" id="per_page" name="per_page">
-                                        <option @selected($per_page == 20)>20</option>
-                                        <option @selected($per_page == 50)>50</option>
-                                        <option @selected($per_page == 100)>100</option>
-                                        <option @selected($per_page == 200)>200</option>
-                                        <option @selected($per_page == 500)>500</option>
-                                        <option @selected($per_page == 1000)>1000</option>
-                                        <option @selected($per_page == 3000)>3000</option>
-                                        <option @selected($per_page == 5000)>5000</option>
+                                        @foreach (App\Enums\PerPage::cases() as $i)
+                                            <option @selected($per_page == $i)>{{ $i }}</option>
+                                        @endforeach
                                     </select>
                                     <button type="submit" class="btn btn-success">Go</button>
                                 </div>
@@ -72,7 +67,54 @@
                                         <tr>
                                             <td align="left">{{ $loop->iteration }}</td>
                                             <td align="left" nowrap="nowrap">{{ $student->created_at->format('Y-m-d') }}</td>
-                                            <td align="left" nowrap="nowrap" style="display: flex; flex-direction: column-reverse;"></td>
+                                            <td align="left" nowrap="nowrap" style="display: flex; flex-direction: column-reverse;">
+                                                <table width="100%" border="1" cellpadding="4" cellspacing="0">
+                                                    @if($student->courses->count() != 0)
+                                                        @foreach($student->courses as $course)
+                                                            <tr>
+                                                                <td bgcolor="#FFFFCC">
+                                                                    - <a title="Edit {{ $course->name }}" href="students_courses_edit?courseid={{ $course->id }}&id={{ $student->id }}&TB_iframe=true&keepthis=true&width=800&height=450" class="thickbox">{{ $course->name }}</a>
+                                                                </td>
+                                                                <td bgcolor="#FFFFCC">{{ $course->pivot->id }}</td>
+                                                                <td bgcolor="#FFFFCC">
+                                                                    <a href="payments.php?studentid={{ $student->id }}&courseid={{ $course->id }}&TB_iframe=true&keepthis=true&width=800&height=350" class="thickbox">Payment</a>
+                                                                </td>
+                                                                <td bgcolor="#FFFFCC">
+                                                                    <a href="resetexam.php?studentid={{ $student->id }}&courseid={{ $course->id }}&TB_iframe=true&keepthis=true&height=200" class="thickbox">Reset</a>
+                                                                </td>
+                                                                <td bgcolor="#FFFFCC">
+                                                                    <a href="delete_courses.php?id={{ $course->id }}&studentid={{ $student->id }}&courseid={{ $course->id }}&TB_iframe=true&keepthis=true&width=800&height=350" class="thickbox">Delete</a>
+                                                                </td>
+                                                                <td bgcolor="#FFFFCC">
+                                                                    <a target="_blank" href="declare_result.php?studentid={{ $student->id }}&courseid={{ $course->id }}">Declare Result</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="document_links">
+                                                                    <div class="row">
+                                                                        @if($student->member_card_status == 1)
+                                                                            <div class="col-3">
+                                                                                <center>
+                                                                                    <a class="white" target="_blank" href="{{ asset("storage/membership_cards/{$student->id}.pdf") }}">Membership Card</a>
+                                                                                    <br />
+                                                                                    <a target="_blank" href="{{ asset("storage/qrcode/{$student->id}.png") }}" class="white">QR Check Link</a>
+                                                                                    <br />
+                                                                                    <form action="{{ route('students.destroy', $student) }}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure to delete this? {{ $student->id }}');">
+                                                                                        @csrf
+                                                                                        @method('delete')
+                                                                                        <button type="submit" class="btn btn-light">Delete</button>
+                                                                                    </form>
+                                                                                </center>
+                                                                            </div>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </table>
+                                            </td>
+
                                             <td>{{ $student->centre->name }}</td>
                                             <td nowrap="nowrap">
                                                 <img class="image-display" src="{{ asset('storage/' . $student->photo) }}" alt="Student Photo" width="100">
