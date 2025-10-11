@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\QRCode;
 use App\Models\Certificate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -220,13 +221,7 @@ class AdmitCardService
             die('Error! matching file name not found ...');
         }
 
-        $qrpngfile = "qrcode_" . time() . ".png";
-
-        // make student qrcode directory
-        Storage::disk('public')->makeDirectory('qrcode');
-        $qrpng_path = public_path('storage/qrcode/' . $qrpngfile);
-
-        \QRcode::png($url, $qrpng_path);
+        $qrpng_path = QRCode::generate($url)->path;
 
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFont('arial', '', 12);
