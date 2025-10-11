@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EmailLog extends Model
 {
     protected $casts = [
-        'gmail_address' => 'json',
         'cc_emails' => 'json',
-        'to_email' => 'json',
         'sent_at' => 'datetime',
     ];
 
