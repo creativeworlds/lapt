@@ -41,4 +41,18 @@ class Student extends Model
     {
         return $this->hasOne(Certificate::class);
     }
+
+    public function cardDeliveryDates()
+    {
+        return $this->hasMany(CardDeliveryDate::class);
+    }
+
+    public function getCardDeliveryDate($name, $status)
+    {
+        return optional(
+            $this->cardDeliveryDates()
+                ->where(compact(['name', 'status']))
+                ->first()
+        )->date?->format('d-m-Y') ?? '00-00-0000';
+    }
 }

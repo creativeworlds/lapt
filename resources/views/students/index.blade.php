@@ -104,6 +104,8 @@
                                                                                         @method('delete')
                                                                                         <button type="submit" class="btn btn-light">Delete</button>
                                                                                     </form>
+                                                                                    <br /> <br />
+                                                                                    <x-couriered-status :data="$student" name="membership_card" />
                                                                                 </center>
                                                                             </div>
                                                                         @endif
@@ -134,7 +136,7 @@
                                                             <div class="document-single-item">
                                                                 <h6>Education proof</h6>
                                                                 <a target="_blank" href="{{ asset('storage/' . $student->id_card) }}">
-                                                                    <img class="image-display" src="{{ asset('storage/' . $student->id_card) }}" alt="Student Education proof" />
+                                                                    <img class="image-display" src="{{ asset('storage' . $student->id_card) }}" alt="Student Education proof" />
                                                                 </a>
                                                             </div>
                                                         @endif
@@ -190,8 +192,8 @@
                                                         <a class="btn mt-1 px-5 text-center btn-danger" title="Click this button to cancel the student's approval." onclick="confirmUnapproveAction({{ $student->id }}, '{{ $student->email }}')">Unapprove</a>
                                                     @endif
 
-                                                    @if($student->status)
-                                                        <a href="{{ route('certificate.pdf', $student->certificate->id) }}" class="btn text-white mt-1 btn-primary">Issue Documents</a>
+                                                    @if($student->certificate)
+                                                        <a href="{{ route('certificate.pdf', $student->certificate) }}" class="btn text-white mt-1 btn-primary">Issue Documents</a>
                                                     @endif
                                                 </div>
                                             </td>
