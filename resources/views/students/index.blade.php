@@ -105,7 +105,7 @@
                                                                                         <button type="submit" class="btn btn-light">Delete</button>
                                                                                     </form>
                                                                                     <br /> <br />
-                                                                                    <x-couriered-status :data="$student" name="membership_card" />
+                                                                                    <x-couriered-status :$student name="membership_card" />
                                                                                 </center>
                                                                             </div>
                                                                         @endif
