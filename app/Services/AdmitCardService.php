@@ -196,17 +196,8 @@ class AdmitCardService
 
         $pdf->Output($target_path, 'F');
 
-        // gentare url for qrcode
-        $f = str_replace(["{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_", '.pdf'], '', $newFileName);
-        $cname = explode('_', $f);
-        $cname = $cname[count($cname) - 1];
-
-        // $urlFile = $url = "/admin/certificates/$file";
-
-        $slug = "{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_{$cname}";
-        $slug = str_rot13($slug);
-        $slug = rtrim(strtr(base64_encode($slug), '+/', '-_'), '=');
-        $url = url("/verification.php?verify=" . $slug);
+        /** Genrate qrcode image path */
+        $qrCodePath = QRCode::url($newFileName)->generate()->getPath();
 
         // apply qrcode inside admit card
         $pdf = new Fpdi();
@@ -221,22 +212,24 @@ class AdmitCardService
             die('Error! matching file name not found ...');
         }
 
-        $qrpng_path = QRCode::generate($url)->getPath();
-
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFont('arial', '', 12);
         if (preg_match('/admit/i', $fileName)) {
-            $pdf->Image($qrpng_path, 40, 41.5, 9.8);
+            $pdf->Image($qrCodePath, 40, 41.5, 9.8);
         } else {
             die('Error! matching file name not found ...');
         }
 
+        // delete qrcode image
         QRCode::delete();
         @unlink($target_path);
         $pdf->Output("F", $target_path);
 
         imagedestroy($image);
 
-        return compact(['url', 'target_path']);
+        return (object) [
+            'url' => QRCode::getUrl(),
+            'path' => $target_path
+        ];
     }
 }

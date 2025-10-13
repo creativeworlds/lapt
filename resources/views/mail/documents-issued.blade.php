@@ -42,7 +42,7 @@
 
             <tr>
                 <td>Admit Card Attachment Link</td>
-                <td><a href="{{ $admitCard['target_path'] }}">Admit Card</td>
+                <td><a href="{{ $admitCard->path }}">Admit Card</td>
             </tr>
 
             <tr>
@@ -52,7 +52,7 @@
 
             <tr>
                 <td>Admit Card Link</td>
-                <td><a href="{{ $admitCard['url'] }}">View Attachment</td>
+                <td><a href="{{ $admitCard->url }}">View Attachment</td>
             </tr>
 
             <tr>
