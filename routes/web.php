@@ -30,3 +30,5 @@ Route::resource('students', StudentController::class)->middleware('auth');
 Route::resource('students.certificates', CertificateController::class)->middleware('auth');
 Route::resource('certificates', CertificateController::class)->middleware('auth');
 Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'generatePdf'])->name('certificate.pdf')->middleware('auth');
+
+Route::view('verify/{fileName}', 'verification')->name('verify');
