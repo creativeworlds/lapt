@@ -12,8 +12,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Bind the key 'QRCode' to the QRCode class
-        $this->app->singleton('QRCode', fn() => new QRCode());
+        // Bind the key 'qrcode' to the QRCode class
+        $this->app->singleton('qrcode', fn() => new QRCode());
     }
 
     /**

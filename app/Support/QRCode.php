@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /** QR Code External Library */
 class QRCode
@@ -21,22 +22,62 @@ class QRCode
      */
     protected $url;
 
+    /**
+     * QR Code Image File Path
+     * 
+     * @var string
+     */
+    protected $filePath;
+
+    /**
+     * QR Code Card Name
+     * 
+     * @var string
+     */
+    protected $cardName;
+
+    /**
+     * Set the QR context (usually a URL or text)
+     * 
+     * @param string $context
+     * @return $this
+     */
+    public function url($context): self
+    {
+        /** Context File Name */
+        $fileName = Str::beforeLast($context, '.pdf');
+
+        // destructure file name
+        list($courseId, $studentId, $certificateId, $this->cardName) = explode('_', $fileName);
+
+        /** Verfication Encoded File Name */
+        $encodeFileName = Verification::encode($fileName);
+
+        // genrate url for qrcode
+        $this->url = route('verify', $encodeFileName);
+
+        return $this;
+    }
+
     /** 
      * Genrate QR Code PNG Image 
      * 
-     * @param  string  $text
+     * @param string $context
      * @return $this 
      */
-    public function generate($text): self
+    public function generate(?string $context = null): self
     {
-        // genrate qrcode storage path
-        $this->path = Storage::disk('public')->path("qrcode/qrcode_" . time() . ".png");
+        // create qrcode folder
+        Storage::disk('public')->makeDirectory('qrcode');
 
-        // genrate qrcode url
-        $this->url = Storage::disk('public')->url("qrcode/qrcode_" . time() . ".png");
+        // qrcode image file path
+        $this->filePath = "qrcode/qrcode_" . time() . ".png";
+
+        // genrate qrcode storage path
+        $this->path = Storage::disk('public')->path($this->filePath);
 
         // genrate qr code png image
-        \QRcode::png($text, $this->path);
+        \QRcode::png($context ?? $this->url, $this->path);
 
         return $this;
     }
@@ -61,6 +102,16 @@ class QRCode
         return $this->url;
     }
 
+    /**
+     * Get genrated qrcode card name
+     * 
+     * @return string
+     */
+    public function getCardName()
+    {
+        return $this->cardName;
+    }
+
     /** 
      * Delete the generated qrcode image 
      *
@@ -68,6 +119,6 @@ class QRCode
      */
     public function delete()
     {
-        return unlink($this->path);
+        return Storage::disk('public')->delete($this->filePath);
     }
 }
