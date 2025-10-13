@@ -214,7 +214,7 @@
                                 </tbody>
                             </table>
 
-                            <x-pagination :data="$students" />
+                            <x-pagination :currentPage="$students->currentPage()" :lastPage="$students->lastPage()" />
                         </div>
                     </div>
                 </div>
