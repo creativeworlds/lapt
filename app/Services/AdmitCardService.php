@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Helpers\QRCode;
 use App\Models\Certificate;
+use App\Support\Facades\QRCode;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
@@ -221,7 +221,7 @@ class AdmitCardService
             die('Error! matching file name not found ...');
         }
 
-        $qrpng_path = QRCode::generate($url)->path;
+        $qrpng_path = QRCode::generate($url)->getPath();
 
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFont('arial', '', 12);
@@ -231,7 +231,7 @@ class AdmitCardService
             die('Error! matching file name not found ...');
         }
 
-        @unlink($qrpng_path);
+        QRCode::delete();
         @unlink($target_path);
         $pdf->Output("F", $target_path);
 
