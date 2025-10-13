@@ -47,7 +47,7 @@
 
             <tr>
                 <td>Registration Letter Attachment Link</td>
-                <td><a href="{{ $registrationLetter['target_path'] }}">Registration Letter</td>
+                <td><a href="{{ $registrationLetter->path }}">Registration Letter</td>
             </tr>
 
             <tr>
@@ -57,7 +57,7 @@
 
             <tr>
                 <td>Registration letter Link</td>
-                <td><a href="{{ $registrationLetter['url'] }}">View Attachment</td>
+                <td><a href="{{ $registrationLetter->url }}">View Attachment</td>
             </tr>
         </table>
     </div>

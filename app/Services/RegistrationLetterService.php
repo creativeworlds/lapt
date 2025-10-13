@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Certificate;
+use App\Support\Facades\QRCode;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
 
@@ -239,18 +240,6 @@ class RegistrationLetterService
         // registration image convert to pdf
         $pdf->Output($target_path, "F");
 
-        // gentare url for qrcode
-        $f = str_replace(["{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_", '.pdf'], '', $newFileName);
-        $cname = explode('_', $f);
-        $cname = $cname[count($cname) - 1];
-
-        // $urlFile = $url = "/admin/certificates/$file";
-
-        $slug = "{$certificate->course_id}_{$certificate->student_id}_{$certificate->id}_{$cname}";
-        $slug = str_rot13($slug);
-        $slug = rtrim(strtr(base64_encode($slug), '+/', '-_'), '=');
-        $url = url("/verification.php?verify=" . $slug);
-
         // apply qrCode inside registration letter
         $pdf = new Fpdi();
         $pdf->setSourceFile($target_path);
@@ -264,19 +253,14 @@ class RegistrationLetterService
             die('Error! matching file name not found ...');
         }
 
-        $qrpngfile = "qrcode_" . time() . ".png";
-
-        // make student qrcode directory
-        Storage::disk('public')->makeDirectory('qrcode');
-        $qrpng_path = public_path('storage/qrcode/' . $qrpngfile);
-
-        \QRcode::png($url, $qrpng_path);
+        /** Genrate qrcode image path */
+        $qrCodePath = QRCode::url($newFileName)->generate()->getPath();
 
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFont('arial', '', 1);
 
         if (preg_match('/letter/i', $fileName)) {
-            $pdf->Image($qrpng_path, 50, 50, 180, 180);
+            $pdf->Image($qrCodePath, 50, 50, 180, 180);
             $pdf->SetFont('arial', '', 50);
             $pdf->SetXY(70, 50);
             $pdf->Write(0, "Scan to Verify");
@@ -285,12 +269,17 @@ class RegistrationLetterService
             die('Error! matching file name not found ...');
         }
 
-        @unlink($qrpng_path);
+        // delete qrcode image
+        QRCode::delete();
+
         @unlink($target_path);
         $pdf->Output("F", $target_path);
 
         imagedestroy($image);
 
-        return compact(['url', 'target_path']);
+        return (object) [
+            'url' => QRCode::getUrl(),
+            'path' => $target_path
+        ];
     }
 }
