@@ -30,13 +30,6 @@ class QRCode
     protected $filePath;
 
     /**
-     * QR Code Card Name
-     * 
-     * @var string
-     */
-    protected $cardName;
-
-    /**
      * Set the QR context (usually a URL or text)
      * 
      * @param string $context
@@ -45,10 +38,7 @@ class QRCode
     public function url($context): self
     {
         /** Context File Name */
-        $fileName = Str::beforeLast($context, '.pdf');
-
-        // destructure file name
-        list($courseId, $studentId, $certificateId, $this->cardName) = explode('_', $fileName);
+        $fileName = Str::beforeLast($context, '.');
 
         /** Verfication Encoded File Name */
         $encodeFileName = Verification::encode($fileName);
@@ -100,16 +90,6 @@ class QRCode
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Get genrated qrcode card name
-     * 
-     * @return string
-     */
-    public function getCardName()
-    {
-        return $this->cardName;
     }
 
     /** 
