@@ -279,7 +279,7 @@ class RegistrationLetterService
 
         return (object) [
             'url' => QRCode::getUrl(),
-            'path' => $target_path
+            'path' => asset('storage/certificates/' . $newFileName),
         ];
     }
 }
