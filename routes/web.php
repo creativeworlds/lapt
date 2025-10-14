@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 // breeze authentication routes
@@ -31,4 +32,4 @@ Route::resource('students.certificates', CertificateController::class)->middlewa
 Route::resource('certificates', CertificateController::class)->middleware('auth');
 Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'generatePdf'])->name('certificate.pdf')->middleware('auth');
 
-Route::view('verify/{fileName}', 'verification')->name('verify');
+Route::get('/verify/{code}', [VerificationController::class, 'verify'])->name('verify');

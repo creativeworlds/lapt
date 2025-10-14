@@ -43,14 +43,14 @@ class QRCode
         /** Verfication Encoded File Name */
         $encodeFileName = Verification::encode($fileName);
 
-        // genrate url for qrcode
+        // generate url for qrcode
         $this->url = route('verify', $encodeFileName);
 
         return $this;
     }
 
     /** 
-     * Genrate QR Code PNG Image 
+     * Generate QR Code PNG Image 
      * 
      * @param string $context
      * @return $this 
@@ -63,17 +63,17 @@ class QRCode
         // qrcode image file path
         $this->filePath = "qrcode/qrcode_" . time() . ".png";
 
-        // genrate qrcode storage path
+        // generate qrcode storage path
         $this->path = Storage::disk('public')->path($this->filePath);
 
-        // genrate qr code png image
+        // generate qr code png image
         \QRcode::png($context ?? $this->url, $this->path);
 
         return $this;
     }
 
     /**
-     * Get genrated qrcode storage path
+     * Get generated qrcode storage path
      * 
      * @return string
      */
@@ -83,7 +83,7 @@ class QRCode
     }
 
     /**
-     * Get genrated qrcode url
+     * Get generated qrcode url
      * 
      * @return string
      */
