@@ -5,6 +5,7 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VerificationController;
@@ -35,3 +36,5 @@ Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'gen
 
 Route::get('/verify/{code}', [VerificationController::class, 'verify'])->name('verify');
 Route::resource('invoices', InvoiceController::class)->middleware('auth');
+
+Route::get('students/{student}/membership', [MembershipController::class, 'create'])->name('membership.create')->middleware('auth');
