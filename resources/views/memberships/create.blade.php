@@ -1,5 +1,5 @@
 <x-layout title="Issue Membership Card">
-    <main class="memberships-create-blade">
+    <main style="min-height:100vh" class="memberships-create-blade">
         <div class="container">
             <div class="card mt-5 p-md-5 shadow-lg">
                 <div class="card-header bg-white">
@@ -13,15 +13,21 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post" id="issue-doc-form">
+
+                    @session('message') <p class="text-success">{{ session('message') }}</p> @endsession
+
+                    <form action="{{ route('memberships.store', $student) }}" method="post">
+                        @csrf
                         <div class="row">
                             <div class="form-group col-md-6 mt-3">
                                 <label class="form-label">Validity Starting Date</label>
-                                <input type="date" required class="form-control" id="starting_date" name="starting_date">
+                                <input type="date" class="form-control" id="starting_date" name="starting_date">
+                                @error('starting_date') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div class="form-group col-md-6 mt-3">
                                 <label class="form-label">Validity Ending Date</label>
-                                <input type="date" required class="form-control" id="completion_date" name="completion_date">
+                                <input type="date" class="form-control" id="completion_date" name="completion_date">
+                                @error('completion_date') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div class="form-group col-md-12 mt-3">
                                 <button class="btn btn-success" type="submit">Issue Documents</button>

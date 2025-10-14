@@ -37,4 +37,5 @@ Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'gen
 Route::get('/verify/{code}', [VerificationController::class, 'verify'])->name('verify');
 Route::resource('invoices', InvoiceController::class)->middleware('auth');
 
-Route::get('students/{student}/membership', [MembershipController::class, 'create'])->name('membership.create')->middleware('auth');
+Route::get('students/{student}/membership', [MembershipController::class, 'create'])->name('memberships.create')->middleware('auth');
+Route::post('students/{student}/membership', [MembershipController::class, 'store'])->name('memberships.store')->middleware('auth');
