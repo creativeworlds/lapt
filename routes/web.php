@@ -4,6 +4,7 @@ use App\Http\Controllers\CentreController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VerificationController;
@@ -33,3 +34,4 @@ Route::resource('certificates', CertificateController::class)->middleware('auth'
 Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'generatePdf'])->name('certificate.pdf')->middleware('auth');
 
 Route::get('/verify/{code}', [VerificationController::class, 'verify'])->name('verify');
+Route::resource('invoices', InvoiceController::class)->middleware('auth');

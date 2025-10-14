@@ -232,6 +232,7 @@
                     <div class="d-flex justify-content-between align-items-center" id="removeFlex">
                         <div class="flex-grow-1">
                             <a href="{{ route('dashboard') }}" class="d-inline-block customNav {{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                            <a href="{{ route('invoices.index') }}" class="d-inline-block customNav {{ request()->routeIs('invoices.*') ? 'active' : '' }}">Sales</a>
                             <a href="{{ route('centres.index') }}" class="d-inline-block customNav {{ request()->routeIs('centres.*') ? 'active' : '' }}">Centres</a>
                             <a href="{{ route('courses.index') }}" class="d-inline-block customNav {{ request()->routeIs('courses.*') ? 'active' : '' }}">Courses</a>
                             <a href="{{ route('students.index') }}" class="d-inline-block customNav {{ request()->routeIs('students.*') ? 'active' : '' }}">Students</a>
