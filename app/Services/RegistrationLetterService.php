@@ -15,7 +15,7 @@ class RegistrationLetterService
         $templatePath = public_path('images/registration_letter_template.jpg');
 
         /** Image Font Family Path */
-        $fontPath = public_path('fonts/arialmtlight.ttf');
+        $fontPath = public_path('fonts/arialmt_light.ttf');
 
         // check template path
         if (!file_exists($templatePath))

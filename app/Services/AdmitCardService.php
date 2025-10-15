@@ -13,7 +13,7 @@ class AdmitCardService
     public function generate(Certificate $certificate)
     {
         /** Image Template Path */
-        $templatePath = public_path('images/id_card_template.jpeg');
+        $templatePath = public_path('images/admit_card_template.jpeg');
 
         /** Image Font Family Path */
         $fontPath = public_path('fonts/riverna_side.otf');
@@ -91,7 +91,7 @@ class AdmitCardService
         Storage::disk('public')->makeDirectory('student_id_cards');
 
         // Sanitize filename
-        $safeName = Str::slug($certificate->student->name ?: 'student', '_');
+        $safeName = Str::slug($certificate->student->name ?? 'student', '_');
         $timestamp = date('y_m_d_H_i_s');
         $id = $certificate->student->id ?? '0';
         $imageName = "{$safeName}_{$timestamp}_{$id}.jpg";
@@ -150,6 +150,7 @@ class AdmitCardService
         $student_photo_x = imagesx($image) - $student_photo_width - 0;
         $student_photo_y = imagesy($image) - $student_photo_height - 377;
 
+        // apply student photo resize image
         imagecopy($image, $student_photo_resized, $student_photo_x, $student_photo_y, 0, 0, $student_photo_width, $student_photo_height);
 
         if (file_exists($outputPath)) {
@@ -220,11 +221,11 @@ class AdmitCardService
             die('Error! matching file name not found ...');
         }
 
+        $pdf->Output("F", $target_path);
+
         // delete qrcode image
         QRCode::delete();
         @unlink($target_path);
-        $pdf->Output("F", $target_path);
-
         imagedestroy($image);
 
         return (object) [
