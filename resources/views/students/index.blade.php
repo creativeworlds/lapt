@@ -1,5 +1,10 @@
+@php
+    use App\Enums\PerPage;
+    use App\Support\Facades\QRCode;
+@endphp
+
 <x-layout title="Students">
-    <main class="student-index main-content-div">
+    <main class="students-index-blade main-content-div">
         <div class="container-fluid pt-3">
             <div class="cards shadows">
                 <div class="card-bodys">
@@ -11,7 +16,7 @@
                                 <h4 for="per_page" class="me-2 mb-0 text-nowrap">Records per page:</h4>
                                 <div class="input-group">
                                     <select class="form-select" id="per_page" name="per_page">
-                                        @foreach (App\Enums\PerPage::cases() as $i)
+                                        @foreach (PerPage::cases() as $i)
                                             <option @selected($per_page == $i)>{{ $i }}</option>
                                         @endforeach
                                     </select>
@@ -37,6 +42,9 @@
                         <a href="#">Download Excel Format</a>
                         <a href="studentbulkregister.php"><span class="btn btn-success">Bulk Student registration</span></a>
                     </div>
+
+                    @session('error') <p class="text-danger">{{ session('error') }}</p> @endsession
+                    @session('message') <p class="text-success">{{ session('message') }}</p> @endsession
 
                     <div>
                         <h2>Students</h2>
@@ -95,17 +103,21 @@
                                                                         @if($student->member_card_status == 1)
                                                                             <div class="col-3">
                                                                                 <center>
-                                                                                    <a class="white" target="_blank" href="{{ asset("storage/membership_cards/{$student->id}.pdf") }}">Membership Card</a>
+                                                                                    @php 
+                                                                                        $fileName = "{$course->id}_{$student->id}_{$student->certificate->id}_membership.pdf";
+                                                                                    @endphp
+
+                                                                                    <a class="white" target="_blank" href="{{ asset("storage/certificates/{$fileName}") }}">Membership Card</a>
                                                                                     <br />
-                                                                                    <a target="_blank" href="{{ asset("storage/qrcode/{$student->id}.png") }}" class="white">QR Check Link</a>
+                                                                                    <a target="_blank" href="{{ QRCode::url($fileName)->getUrl() }}" class="white">QR Check Link</a>
                                                                                     <br />
-                                                                                    <form action="{{ route('students.destroy', $student) }}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure to delete this? {{ $student->id }}');">
+                                                                                    <form action="{{ route('memberships.delete', $student)}}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure to delete this? \n{{ $student->name }} Membership Card');">
                                                                                         @csrf
                                                                                         @method('delete')
                                                                                         <button type="submit" class="btn btn-light">Delete</button>
                                                                                     </form>
                                                                                     <br /> <br />
-                                                                                    <x-couriered-status :$student name="membership_card" />
+                                                                                    <x-couriered-status :$student name="membership" />
                                                                                 </center>
                                                                             </div>
                                                                         @endif
