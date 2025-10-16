@@ -25,8 +25,8 @@ class MailSentLog
     {
         EmailLog::create([
             'user_id' => auth()->id(),
-            'student_id' => $event->data['certificate']['student']['id'],
-            'centre_id' => $event->data['certificate']['student']['centre']['id'],
+            'student_id' => $event->data['certificate']['student']['id'] ?? $event->data['student']['id'],
+            'centre_id' => $event->data['certificate']['student']['centre']['id'] ?? $event->data['student']['centre']['id'],
             'gmail_address' => collect($event->message->getFrom())->map(fn($mail) => $mail->getAddress())->first(),
             'to_email' => collect($event->message->getTo())->map(fn($mail) => $mail->getAddress())->first(),
             'cc_emails' => collect($event->message->getCc())->map(fn($mail) => $mail->getAddress()),
