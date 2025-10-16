@@ -25,6 +25,7 @@ class Student extends Model
         'address_line',
         'details',
         'password',
+        'member_card_status'
     ];
 
     public function centre()

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->string('member_card_status', 1)->default(0);
+            $table->string('member_card_status', 1)->after('password')->default(0);
         });
     }
 

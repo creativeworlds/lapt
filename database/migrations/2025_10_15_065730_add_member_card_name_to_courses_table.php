@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->string('member_card_name')->nullable();
+            $table->string('member_card_name')->after('code')->nullable();
         });
     }
 
