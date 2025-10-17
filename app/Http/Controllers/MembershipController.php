@@ -43,7 +43,7 @@ class MembershipController extends Controller
     public function delete(Student $student)
     {
         // remove membership card pdf file
-        Storage::disk('public')->delete("certificates/{$student->certificate->course_id}_{$student->id}_{$student->certificate->id}_membership.pdf");
+        Storage::disk('public')->delete("certificates/{$student->id}_membership.pdf");
 
         // user activity log create
         UserActivityLog::create([

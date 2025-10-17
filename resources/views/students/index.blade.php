@@ -104,7 +104,7 @@
                                                                             <div class="col-3">
                                                                                 <center>
                                                                                     @php 
-                                                                                        $fileName = "{$course->id}_{$student->id}_{$student->certificate->id}_membership.pdf";
+                                                                                        $fileName = "{$student->id}_membership.pdf";
                                                                                     @endphp
 
                                                                                     <a class="white" target="_blank" href="{{ asset("storage/certificates/{$fileName}") }}">Membership Card</a>
