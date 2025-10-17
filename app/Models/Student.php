@@ -49,4 +49,8 @@ class Student extends Model
             $this->cardDeliveryDates()->where(compact(['name', 'status']))->first()
         )->date?->format('d-m-Y') ?? '00-00-0000';
     }
+
+    public function course() {
+        return $this->courses()->first();
+    }
 }

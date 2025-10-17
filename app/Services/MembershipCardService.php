@@ -17,7 +17,7 @@ class MembershipCardService
         $outputPath = public_path("storage/certificates");
 
         /** Membership Card File Name */
-        $fileName = strtolower("{$student->certificate->course_id}_{$student->id}_{$student->certificate->id}_membership");
+        $fileName = strtolower("{$student->id}_membership");
 
         /** Student Photo Path */
         $studentPhotoPath = public_path("storage/{$student->photo}");
@@ -38,7 +38,7 @@ class MembershipCardService
         $white = imagecolorallocate($image, 255, 255, 255);
 
         /** Membership Card Name */
-        $membershipCardName = $student->certificate->course->member_card_name;
+        $membershipCardName = $student->course()->member_card_name;
 
         // break text into lines
         $words = explode(' ', $membershipCardName);
@@ -58,8 +58,8 @@ class MembershipCardService
         imagettftext($image, 25, 0, 350, 125, $white, $fontPath, $membershipCardName ? $membershipCardNameWrapped : 'Membership Card');
         imagettftext($image, 20, 0, 400, 265, $black, $fontPath, $student->name);
         imagettftext($image, 20, 0, 400, 312, $black, $fontPath, "{$dateBetween['starting_date']} to {$dateBetween['completion_date']}");
-        imagettftext($image, 20, 0, 400, 350, $black, $fontPath, $student->certificate->id);
-        imagettftext($image, 15, 0, 400, 385, $black, $fontPath, $student->certificate->course->name);
+        imagettftext($image, 20, 0, 400, 350, $black, $fontPath, $student->course()->certificate_id ?? 0);
+        imagettftext($image, 15, 0, 400, 385, $black, $fontPath, $student->course()->name);
 
         $student_photo_type = exif_imagetype($studentPhotoPath);
 
