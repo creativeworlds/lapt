@@ -15,18 +15,8 @@ class UserSeeder extends Seeder
         // multiple row create
         $users = collect([
             [
-                'name' => 'Super Admin',
-                'email' => 'super.admin@lapt.org',
-                'password' => 'password',
-            ],
-            [
-                'name' => 'Centre Admin',
-                'email' => 'centre_admin@lapt.org',
-                'password' => 'password',
-            ],
-            [
-                'name' => 'Staff',
-                'email' => 'staff@lapt.org',
+                'name' => 'Pramod Singh',
+                'email' => 'pramod@lapt.org',
                 'password' => 'password',
             ]
         ]);
