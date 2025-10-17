@@ -21,9 +21,9 @@
     DB_CONNECTION=mysql
     DB_HOST=localhost
     DB_PORT=3306
-    DB_DATABASE=laravel
-    DB_USERNAME=root
-    DB_PASSWORD=
+    DB_DATABASE=rsfgqdfp_laravel.lapt
+    DB_USERNAME=rsfgqdfp_pramod
+    DB_PASSWORD=06@Sep1997
     ```
 
     - Run Migrations & Seeders
