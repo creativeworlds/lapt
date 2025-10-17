@@ -34,9 +34,15 @@ class StudentController extends Controller
      */
     public function store(Request $req)
     {
+        // store student photo
         $photo = $req->file('photo')->store('student_images', 'public');
 
-        Student::create([...$req->all(), ...compact('photo')]);
+        /** Create New Student */
+        $student = Student::create([...$req->all(), ...compact('photo')]);
+
+        // create student courses relationship
+        $student->courses()->attach($req->course_id);
+
         return back()->with('message', 'Student created successfully.');
     }
 

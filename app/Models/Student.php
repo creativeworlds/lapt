@@ -35,12 +35,7 @@ class Student extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'certificates')->withPivot('id');
-    }
-
-    public function certificate()
-    {
-        return $this->hasOne(Certificate::class);
+        return $this->belongsToMany(Course::class, 'student_courses')->withPivot('id');
     }
 
     public function cardDeliveryDates()
