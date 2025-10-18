@@ -35,7 +35,17 @@ class Student extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'student_courses')->withPivot('id');
+        return $this->belongsToMany(Course::class, 'student_courses')
+            ->withPivot([
+                'certificate_id',
+                'registration_date',
+                'payment',
+                'payment_status',
+                'start_date',
+                'end_date',
+                'course_status',
+                'status'
+            ]);
     }
 
     public function cardDeliveryDates()
@@ -50,7 +60,8 @@ class Student extends Model
         )->date?->format('d-m-Y') ?? '00-00-0000';
     }
 
-    public function course() {
-        return $this->courses()->first();
+    public function course(?Course $course = null)
+    {
+        return $this->courses()->when($course, fn($query) => $query->whereKey($course))->first();
     }
 }

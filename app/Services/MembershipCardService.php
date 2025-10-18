@@ -58,7 +58,7 @@ class MembershipCardService
         imagettftext($image, 25, 0, 350, 125, $white, $fontPath, $membershipCardName ? $membershipCardNameWrapped : 'Membership Card');
         imagettftext($image, 20, 0, 400, 265, $black, $fontPath, $student->name);
         imagettftext($image, 20, 0, 400, 312, $black, $fontPath, "{$dateBetween['starting_date']} to {$dateBetween['completion_date']}");
-        imagettftext($image, 20, 0, 400, 350, $black, $fontPath, $student->course()->certificate_id ?? 0);
+        imagettftext($image, 20, 0, 400, 350, $black, $fontPath, $student->course()->pivot->certificate_id ?? 0);
         imagettftext($image, 15, 0, 400, 385, $black, $fontPath, $student->course()->name);
 
         $student_photo_type = exif_imagetype($studentPhotoPath);

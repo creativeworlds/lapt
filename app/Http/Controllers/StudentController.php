@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Centre;
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -79,5 +80,23 @@ class StudentController extends Controller
     {
         $student->delete();
         return back()->with('message', 'Student deleted successfully.');
+    }
+
+    public function editCourse(Student $student, Course $course)
+    {
+        $courses = Course::all();
+        $course = $student->course($course);
+        return view('students.courses.edit', compact(['course', 'courses', 'student']));
+    }
+
+    public function updateCourse(Request $req, Student $student, Course $course)
+    {
+        // update student courses record
+        $student->courses()->updateExistingPivot($course, $req->except(['_token', '_method', 'certificate_names']));
+
+        // student course update flash message
+        session()->flash('message', 'Student course updated successfully.');
+
+        return response("<script>window.parent.tb_remove();window.parent.location.reload();</script>");
     }
 }

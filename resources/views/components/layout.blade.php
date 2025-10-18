@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $title ?? '' }} | {{ config('app.name', 'Laravel') }}</title>
 
     <!-- CSS Reset -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/reset.css') }}" media="screen" />
@@ -211,47 +211,51 @@
 
 <body>
 
-    <header>
-        <div id="header-status">
-            <div class="container-fluid bg-dark px-5">
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="my-2 text-white h4">LAPT - ADMINISTRATION PANEL</span>
+    @isset($title)
+        <header>
+            <div id="header-status">
+                <div class="container-fluid bg-dark px-5">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="my-2 text-white h4">LAPT - ADMINISTRATION PANEL</span>
 
-                    <form action="{{ route('logout') }}" method="post">
-                        @csrf;
-                        <button type="submit" class="btn my-2 btn-primary text-white">Logout</button>
-                    </form>
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf;
+                            <button type="submit" class="btn my-2 btn-primary text-white">Logout</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="fontStyle2">
-            <button type="button" data-bs-toggle="collapse" data-bs-target="#bottomNavbar" class="btn btn-danger w-100 d-lg-none d-md-none d-sm-block d-xs-block rounded-0 p-2"><i class="fas fa-bars me-2" aria-hidden="true"></i> Menu</button>
-            <div class="collapse navbar-collapse px-2" id="bottomNavbar">
-                <div class="container-fluid">
-                    <div class="d-flex justify-content-between align-items-center" id="removeFlex">
-                        <div class="flex-grow-1">
-                            <a href="{{ route('dashboard') }}" class="d-inline-block customNav {{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
-                            <a href="{{ route('invoices.index') }}" class="d-inline-block customNav {{ request()->routeIs('invoices.*') ? 'active' : '' }}">Sales</a>
-                            <a href="{{ route('centres.index') }}" class="d-inline-block customNav {{ request()->routeIs('centres.*') ? 'active' : '' }}">Centres</a>
-                            <a href="{{ route('courses.index') }}" class="d-inline-block customNav {{ request()->routeIs('courses.*') ? 'active' : '' }}">Courses</a>
-                            <a href="{{ route('students.index') }}" class="d-inline-block customNav {{ request()->routeIs('students.*') ? 'active' : '' }}">Students</a>
-                        </div>
+            <div class="fontStyle2">
+                <button type="button" data-bs-toggle="collapse" data-bs-target="#bottomNavbar" class="btn btn-danger w-100 d-lg-none d-md-none d-sm-block d-xs-block rounded-0 p-2"><i class="fas fa-bars me-2" aria-hidden="true"></i> Menu</button>
+                <div class="collapse navbar-collapse px-2" id="bottomNavbar">
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-between align-items-center" id="removeFlex">
+                            <div class="flex-grow-1">
+                                <a href="{{ route('dashboard') }}" class="d-inline-block customNav {{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                                <a href="{{ route('invoices.index') }}" class="d-inline-block customNav {{ request()->routeIs('invoices.*') ? 'active' : '' }}">Sales</a>
+                                <a href="{{ route('centres.index') }}" class="d-inline-block customNav {{ request()->routeIs('centres.*') ? 'active' : '' }}">Centres</a>
+                                <a href="{{ route('courses.index') }}" class="d-inline-block customNav {{ request()->routeIs('courses.*') ? 'active' : '' }}">Courses</a>
+                                <a href="{{ route('students.index') }}" class="d-inline-block customNav {{ request()->routeIs('students.*') ? 'active' : '' }}">Students</a>
+                            </div>
 
-                        <div class="m-3">
-                            <i class="fas fa-search text-white fs-6" aria-hidden="true"></i>
+                            <div class="m-3">
+                                <i class="fas fa-search text-white fs-6" aria-hidden="true"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
+    @endisset
 
     {{ $slot }}
 
-    <footer class="p-2 text-center d-flex justify-content-center align-item-center bg-dark" style="width:100%;">
-        <h5 class="my-1 text-white">&copy; {{ date('Y') }}. <a class="text-white" href="#" title="ADMINISTRATION PANEL">LAPT</a></h5>
-    </footer>
+    @isset($title)
+        <footer class="p-2 text-center d-flex justify-content-center align-item-center bg-dark" style="width:100%;">
+            <h5 class="my-1 text-white">&copy; {{ date('Y') }}. <a class="text-white" href="#" title="ADMINISTRATION PANEL">LAPT</a></h5>
+        </footer>
+    @endisset
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script> feather.replace(); </script>

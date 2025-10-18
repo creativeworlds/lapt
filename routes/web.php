@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\CentreController;
-use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
@@ -30,13 +29,13 @@ Route::resource('centres.students', StudentController::class)->middleware('auth'
 Route::get('centres/{centre}/courses', [CentreController::class, 'getCentreCourses'])->middleware('auth')->name('centre.courses');
 Route::resource('courses', CourseController::class)->middleware('auth');
 Route::resource('students', StudentController::class)->middleware('auth');
-Route::resource('students.certificates', CertificateController::class)->middleware('auth');
-Route::resource('certificates', CertificateController::class)->middleware('auth');
-Route::get('certificates/{certificate}/pdf', [CertificateController::class, 'generatePdf'])->name('certificate.pdf')->middleware('auth');
 
 Route::get('/verify/{code}', [VerificationController::class, 'verify'])->name('verify');
 Route::resource('invoices', InvoiceController::class)->middleware('auth');
 
-Route::get('students/{student}/membership', [MembershipController::class, 'create'])->name('memberships.create')->middleware('auth');
-Route::post('students/{student}/membership', [MembershipController::class, 'store'])->name('memberships.store')->middleware('auth');
-Route::delete('students/{student}/membership', [MembershipController::class, 'delete'])->name('memberships.delete')->middleware('auth');
+Route::get('students/{student}/memberships/create', [MembershipController::class, 'create'])->name('memberships.create')->middleware('auth');
+Route::post('students/{student}/memberships', [MembershipController::class, 'store'])->name('memberships.store')->middleware('auth');
+Route::delete('students/{student}/memberships', [MembershipController::class, 'delete'])->name('memberships.delete')->middleware('auth');
+
+Route::get('students/{student}/courses/{course}/edit', [StudentController::class, 'editCourse'])->name('students.courses.edit')->middleware('auth');
+Route::put('students/{student}/courses/{course}', [StudentController::class, 'updateCourse'])->name('students.courses.update')->middleware('auth');

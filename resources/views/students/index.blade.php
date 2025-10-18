@@ -81,9 +81,9 @@
                                                         @foreach($student->courses as $course)
                                                             <tr>
                                                                 <td bgcolor="#FFFFCC">
-                                                                    - <a title="Edit {{ $course->name }}" href="students_courses_edit?courseid={{ $course->id }}&id={{ $student->id }}&TB_iframe=true&keepthis=true&width=800&height=450" class="thickbox">{{ $course->name }}</a>
+                                                                    - <a title="Edit {{ $course->name }}" href="{{ route('students.courses.edit', ['course' => $course, 'student' => $student, 'TB_iframe' => 'true', 'keepthis' => 'true', 'width' => 800, 'height' => 450]) }}" class="thickbox">{{ $course->name }}</a>
                                                                 </td>
-                                                                <td bgcolor="#FFFFCC">{{ $course->pivot->id }}</td>
+                                                                <td bgcolor="#FFFFCC">{{ $course->pivot->certificate_id }}</td>
                                                                 <td bgcolor="#FFFFCC">
                                                                     <a href="payments.php?studentid={{ $student->id }}&courseid={{ $course->id }}&TB_iframe=true&keepthis=true&width=800&height=350" class="thickbox">Payment</a>
                                                                 </td>
