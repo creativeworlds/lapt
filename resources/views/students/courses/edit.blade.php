@@ -77,6 +77,7 @@
                             <div class="form-group col-md-6 mt-2">
                                 <label class="form-label">Certificate Id</label>
                                 <input class="form-control" name="certificate_id" type="text" id="certificateId" value="{{ $course->pivot->certificate_id }}">
+                                @error('certificate_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                             </div>
 
                             <div class="form-group col-md-6 mt-2">

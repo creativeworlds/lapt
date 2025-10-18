@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentCourseRequest;
 use App\Models\Centre;
 use App\Models\Course;
 use App\Models\Student;
@@ -89,7 +90,7 @@ class StudentController extends Controller
         return view('students.courses.edit', compact(['course', 'courses', 'student']));
     }
 
-    public function updateCourse(Request $req, Student $student, Course $course)
+    public function updateCourse(StudentCourseRequest $req, Student $student, Course $course)
     {
         // update student courses record
         $student->courses()->updateExistingPivot($course, $req->except(['_token', '_method', 'certificate_names']));
