@@ -1,5 +1,5 @@
 # LAPT Application
 
-✅ [**Production on Site**](https://github.com/creativeworlds/demo.lapt/blob/master/docs/production.md) <br />
+✅ [**Production Deployment Guide**](https://github.com/creativeworlds/demo.lapt/blob/master/docs/production.md) <br />
 ✅ [**Mail Sent with Log**](https://github.com/creativeworlds/demo.lapt/blob/master/docs/mail.md) <br />
 ✅ [**QR Code Generator**](https://github.com/creativeworlds/demo.lapt/blob/master/docs/qrcode.md) <br />
