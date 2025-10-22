@@ -45,57 +45,35 @@ Make sure your public storage is linked:
 php artisan storage:link
 ```
 
-### 3. Create Verification Class
+### 3. Encoded/Decode QRCode URLs
 
 Ensure you have the `Verification` class in `app/Support/Verification.php`:
 
 ```php
 <?php
 
-namespace App\Support;
+use App\Support\Verification;
 
-use Illuminate\Support\Str;
+/**
+* Encode Verification Code
+* 
+* @param string $value
+* @return string
+*/
+$encode = Verification::encode(string $value);
 
-class Verification
-{
-    /**
-     * File Name Encode for QR Code
-     * 
-     * @param string $value
-     * @return string
-     */
-    public static function encode(string $value): string
-    {
-        return Str::of($value)
-            ->pipe(fn($value) => str_rot13($value))
-            ->pipe(fn($value) => base64_encode($value))
-            ->replace(['+', '/'], ['-', '_'])
-            ->rtrim(characters: '=')
-            ->value();
-    }
-
-    /**
-     * QR Code Decode for File Name
-     * 
-     * @param string $value
-     * @return string
-     */
-    public static function decode(string $encoded): string
-    {
-        return Str::of($encoded)
-            ->replace(['-', '_'], ['+', '/'])
-            ->pipe(fn($value) => base64_decode($value))
-            ->pipe(fn($value) => str_rot13($value))
-            ->value();
-    }
-}
+/**
+* Decode Verification Value
+* 
+* @param string $encode
+* @return string
+*/
+$value = Verification::decode(string $encode);
 ```
 
 ### 4. Define Verification Controller
 ```php
 <?php
-
-namespace App\Http\Controllers;
 
 use App\Support\Verification;
 use Illuminate\Http\Request;
