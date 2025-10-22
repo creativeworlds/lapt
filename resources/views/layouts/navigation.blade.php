@@ -27,10 +27,6 @@
                     <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
                         {{ __('Students') }}
                     </x-nav-link>
-
-                    <x-nav-link :href="route('certificates.index')" :active="request()->routeIs('certificates.*')">
-                        {{ __('Certificates') }}
-                    </x-nav-link>
                 </div>
             </div>
 
