@@ -63,15 +63,35 @@ class CentreCategoryController extends Controller
      */
     public function edit(CentreCategory $centreCategory)
     {
-        //
+        return view('centres.categories.edit', compact('centreCategory'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CentreCategoryRequest $request, CentreCategory $centreCategory)
+    public function update(CentreCategoryRequest $req, CentreCategory $centreCategory)
     {
-        //
+        // user activity log create
+        UserActivityLog::create([
+            'user_id' => auth()->id(),
+            'module_name' => 'Centre Category',
+            'action_type' => 'Update',
+            'action_details' => 'Updated a centre category.',
+            'old_value' => [
+                'id' => $centreCategory->id,
+                "name" => $centreCategory->name,
+                'sort_order' => $centreCategory->sort_order
+            ],
+            'new_value' => [
+                'name' => $req->name,
+                'sort_order' => $req->sort_order
+            ]
+        ]);
+
+        // update centre category
+        $centreCategory->update($req->all());
+
+        return back()->with('message', value: 'Centre category updated successfully.');
     }
 
     /**
