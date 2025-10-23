@@ -209,7 +209,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.table.min.js"></script>
 </head>
 
-<body>
+<body style="min-height:100vh">
 
     @isset($title)
         <header>

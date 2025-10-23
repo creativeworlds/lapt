@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CentreCategoryController;
 use App\Http\Controllers\CentreController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
@@ -39,3 +40,5 @@ Route::delete('students/{student}/memberships', [MembershipController::class, 'd
 
 Route::get('students/{student}/courses/{course}/edit', [StudentController::class, 'editCourse'])->name('students.courses.edit')->middleware('auth');
 Route::put('students/{student}/courses/{course}', [StudentController::class, 'updateCourse'])->name('students.courses.update')->middleware('auth');
+
+Route::resource('centre-categories', CentreCategoryController::class)->middleware('auth');
