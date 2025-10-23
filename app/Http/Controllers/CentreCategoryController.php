@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CentreCategoryRequest;
 use App\Models\CentreCategory;
+use App\Models\UserActivityLog;
 
 class CentreCategoryController extends Controller
 {
@@ -12,7 +13,9 @@ class CentreCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $centreCategories = CentreCategory::all();
+        $totalCentreCategories = CentreCategory::count();
+        return view("centres.categories.index", compact(['centreCategories', 'totalCentreCategories']));
     }
 
     /**
@@ -28,7 +31,22 @@ class CentreCategoryController extends Controller
      */
     public function store(CentreCategoryRequest $req)
     {
-        CentreCategory::create($req->all());
+        // create centre category
+        $centreCategory = CentreCategory::create($req->all());
+
+        // user activity log create
+        UserActivityLog::create([
+            'user_id' => auth()->id(),
+            'module_name' => 'Centre Category',
+            'action_type' => 'Add',
+            'action_details' => 'Added a new centre category.',
+            'old_value' => [],
+            'new_value' => [
+                'id' => $centreCategory->id,
+                "name" => $req->name
+            ]
+        ]);
+
         return back()->with('message', 'Centre category created successfully.');
     }
 
@@ -61,6 +79,22 @@ class CentreCategoryController extends Controller
      */
     public function destroy(CentreCategory $centreCategory)
     {
-        //
+        // delete centre category
+        $centreCategory->delete();
+
+        // user activity log create
+        UserActivityLog::create([
+            'user_id' => auth()->id(),
+            'module_name' => 'Centre Category',
+            'action_type' => 'Delete',
+            'action_details' => 'Deleted a centre category.',
+            'old_value' => [
+                'id' => $centreCategory->id,
+                "name" => $centreCategory->name
+            ],
+            'new_value' => []
+        ]);
+
+        return back()->with('error', 'Centre category deleted successfully.');
     }
 }
