@@ -14,4 +14,9 @@ class Country extends Model
         'postcode',
         'status',
     ];
+
+    public function states()
+    {
+        return $this->hasmany(State::class);
+    }
 }

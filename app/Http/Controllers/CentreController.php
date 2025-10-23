@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Currency;
+use App\Enums\PreferredSeller;
+use App\Enums\TaxType;
 use App\Models\Centre;
+use App\Models\CentreCategory;
+use App\Models\Country;
 use Illuminate\Http\Request;
+use App\Enums\CentreType;
 
 class CentreController extends Controller
 {
@@ -21,7 +27,13 @@ class CentreController extends Controller
      */
     public function create()
     {
-        return view('centres.create');
+        $centreCategories = CentreCategory::all();
+        $countries = Country::get(['id', 'name']);
+        $centreTypes = CentreType::cases();
+        $currencies = Currency::cases();
+        $taxTypes = TaxType::cases();
+        $preferredSellers = PreferredSeller::cases();
+        return view('centres.create', compact(['centreCategories', 'countries', 'centreTypes', 'currencies', 'taxTypes', 'preferredSellers']));
     }
 
     /**
@@ -29,6 +41,8 @@ class CentreController extends Controller
      */
     public function store(Request $req)
     {
+        return $req->all();
+
         Centre::create($req->all());
         return back()->with('message', 'Centre created successfully.');
     }
@@ -67,7 +81,8 @@ class CentreController extends Controller
         return back()->with('message', 'Centre deleted successfully.');
     }
 
-    public function getCentreCourses(Centre $centre) {
-       return $centre->courses;
+    public function getCentreCourses(Centre $centre)
+    {
+        return $centre->courses;
     }
 }

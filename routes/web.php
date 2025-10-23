@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CentreCategoryController;
 use App\Http\Controllers\CentreController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
@@ -42,3 +43,4 @@ Route::get('students/{student}/courses/{course}/edit', [StudentController::class
 Route::put('students/{student}/courses/{course}', [StudentController::class, 'updateCourse'])->name('students.courses.update')->middleware('auth');
 
 Route::resource('centre-categories', CentreCategoryController::class)->middleware('auth');
+Route::get('countries/{country}/states', [CountryController::class, 'getStates'])->middleware('auth')->name('countries.states');

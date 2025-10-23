@@ -1,221 +1,222 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight inline mr-5">
-            {{ __('Add Centre') }}
-        </h2>
+<x-layout title="Add Centre">
+    <main class="centres-create-blade main-content-div">
+        <x-centre-tab />
 
-        <!-- View All Centres Button -->
-        <a href="{{ route('centres.index') }}"
-            class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md shadow hover:bg-gray-300">
-            View All Centres
-        </a>
-    </x-slot>
+        <div class="container mb-5">
+            <div class="col-md-12">
+                <div class="card shadow-lg p-md-3">
+                    <div class="card-header bg-white">
+                        <h2>Add New Centre</h2>
 
-    <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 class="text-2xl font-bold mb-6">Add New Centre</h1>
-
-        <div class="bg-white p-6 shadow-md rounded-lg">
-            <form action="{{ route('centres.store') }}" method="post" enctype="multipart/form-data" class="space-y-6">
-                @csrf
-
-                @if(session('message'))
-                    <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('message') }}</p>
-                @endif
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="category" class="block text-sm font-medium text-gray-700">Centre Category</label>
-                        <select name="category" id="category" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">-- Select Category --</option>
-                            <option value="1" @selected(old('category') == '1')>Accredited Training Partners</option>
-                            <option value="2" @selected(old('category') == '2')>Assessment Centres</option>
-                            <option value="3" @selected(old('category') == '3')>Corporate Partners</option>
-                            <option value="4" @selected(old('category') == '4')>LAPT APL Partners</option>
-                            <option value="5" @selected(old('category') == '5')>LAPT Beauty Centres</option>
-                            <option value="6" @selected(old('category') == '6')>LAPT Aviation Centres</option>
-                            <option value="7" @selected(old('category') == '7')>LAPT Culinary Centres</option>
-                            <option value="8" @selected(old('category') == '8')>LAPT HM Centres</option>
-                            <option value="9" @selected(old('category') == '9')>LAPT IT Centres</option>
-                            <option value="10" @selected(old('category') == '10')>LAPT Misc Centres</option>
-                            <option value="11" @selected(old('category') == '11')>LAPT Inactive Centres</option>
-                        </select>
-                        @error('category')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        @session('message') <p class="alert alert-success">{{ session('message') }}</p> @endsession
                     </div>
 
-                    <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700">Centre Type</label>
-                        <select name="type" id="type" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">-- Select Type --</option>
-                            <option value="1" @selected(old('type') == '1')>Testing Centre</option>
-                            <option value="2" @selected(old('type') == '2')>Partner Centre</option>
-                        </select>
-                        @error('type')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    <div class="card-body">
+                        <form action="{{ route('centres.store') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="form-label">Select Category</label>
+                                    <select class="form-control form-select" name="category_id" id="categoryId">
+                                        @foreach ($centreCategories as $centreCategory)
+                                            <option value="{{ $centreCategory->id }}">{{ $centreCategory->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3 mt-lg-0">
+                                    <label class="form-label">Centre Type</label>
+                                    <select class="form-control form-select" name="centre_type" id="centreType">
+                                        @foreach ($centreTypes as $centreType)
+                                            <option value="{{ $loop->iteration }}">{{ $centreType }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Enter Centre Name</label>
+                                    <input type="text" class="form-control" name="name" id="name" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Enter Centre Code</label>
+                                    <input type="text" class="form-control" name="code" id="code" />
+                                </div>
+
+                                <div class="form-group col-md-12 mt-3">
+                                    <label class="form-label">Address</label>
+                                    <textarea cols="45" rows="5" class="ckeditor" name="address" id="address"></textarea>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Country</label>
+                                    <select name="country_id" class="form-control country form-select" id="countryId" onchange="getStates(this.value)">
+                                        <option value="" selected="selected">-- Select Country --</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">State</label>
+                                    <select class="form-control form-select state" name="state_id" id="stateId">
+                                        <option value="" selected="selected">-- Select State --</option>
+                                    </select>
+                                </div>
+
+                                <!-- ===================== NEW: Invoice & Tax Info ===================== -->
+                                <div class="form-group col-md-12 mt-3">
+                                    <h3 class="mt-3 mb-0">Invoice &amp; Tax Info</h3>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Currency</label>
+                                    <select name="currency" id="currency" class="form-control form-select currency">
+                                        @foreach ($currencies as $currency)
+                                            <option value="{{ $currency }}">{{ $currency }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Tax Type</label>
+                                    <select name="tax_type" id="taxType" class="form-control form-select tax-type">
+                                        @foreach ($taxTypes as $taxType)
+                                            <option value="{{ $taxType }}">{{ $taxType }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">GST / VAT Number</label>
+                                    <input type="text" name="gst_number" id="gstNumber" class="form-control" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Preferred Seller</label>
+                                    <select name="preferred_seller" id="preferredSeller" class="form-control form-select">
+                                        @foreach ($preferredSellers as $preferredSeller)
+                                            <option value="{{ $preferredSeller }}">{{ $preferredSeller }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">GST Mode (Auto)</label>
+                                    <input type="text" id="gstModeDisplay" class="form-control" value="" readonly />
+                                    <input type="hidden" name="gst_mode" id="gstMode" value="" />
+                                    <small class="text-muted">If Country = India: CGST+SGST when Buyer State = Seller State (Delhi), otherwise IGST. UK/Other countries: VAT or Export (0%).</small>
+                                </div>
+                                <!-- =================== END NEW: Invoice & Tax Info =================== -->
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city" id="city" size="30" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Contact Person</label>
+                                    <input type="text" class="form-control" name="contact_person" id="contactPerson" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Mobile Number</label>
+                                    <input type="text" class="form-control" name="mobile" id="mobile" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" name="phone" id="phone" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Fax</label>
+                                    <input type="text" class="form-control" name="fax" id="fax" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" id="email" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" name="description" id="description"></textarea>
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="text" name="website" class="form-control" id="website" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Facebook</label>
+                                    <input type="text" name="facebook" class="form-control" id="facebook" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Twitter</label>
+                                    <input type="text" name="twitter" class="form-control" id="twitter" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Instagram</label>
+                                    <input type="text" name="instagram" class="form-control" id="instagram" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">LinkedIn</label>
+                                    <input type="text" name="linkedin" class="form-control" id="linkedin" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="text" name="password" class="form-control" id="password" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Upload Chairman Signature</label>
+                                    <input name="chairman_sign" class="form-control" type="file" accept="image/*" id="chairmanSign" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Upload Examiner Signature</label>
+                                    <input type="file" accept="image/*" name="examiner_sign" class="form-control" id="examinerSign" />
+                                </div>
+
+                                <div class="form-group col-md-6 mt-3">
+                                    <label class="form-label">Upload Center Logo</label>
+                                    <input type="file" accept="image/*" name="logo" class="form-control" id="logo" />
+                                </div>
+
+                                <div class="form-group col-md-12 mt-3">
+                                    <button type="submit" class="btn px-5 btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700">Centre Name</label>
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="code" class="block text-sm font-medium text-gray-700">Centre Code</label>
-                        <input type="text" name="code" id="code" value="{{ old('code') }}" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('code')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                    <textarea name="address" id="address" value="{{ old('address') }}" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
-                    @error('address')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Country</label>
-                        <select name="country" required
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                             <option value="">-- Select Country --</option>
-                            <option value="1" @selected(old('country') == '1')>India</option>
-                            <option value="2" @selected(old('country') == '2')>USA</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">State</label>
-                        <select name="state" required
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="">-- Select State --</option>
-                            <option value="1" @selected(old('state') == '1')>Uttar Pradesh</option>
-                            <option value="2" @selected(old('state') == '2')>Uttrakhand</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">City</label>
-                        <input type="text" name="city" value="{{ old('city') }}" required
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Contact Person</label>
-                        <input type="text" name="contact_person" value="{{ old('contact_person') }}" required
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Mobile</label>
-                        <input type="text" name="mobile" value="{{ old('mobile') }}" required
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Phone</label>
-                        <input type="text" name="phone" value="{{ old('phone') }}"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Fax</label>
-                        <input type="text" name="fax" value="{{ old('fax') }}"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Email</label>
-                        <input type="email" name="email" value="{{ old('email') }}" required
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Website</label>
-                        <input type="text" name="website" value="{{ old('website') }}"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-sm mb-1">Description</label>
-                    <textarea name="description" rows="3"
-                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">{{ old('description') }}</textarea>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Facebook</label>
-                        <input type="text" name="facebook" value="{{ old('facebook') }}"
-                           
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
-                        <label class="block font-semibold text-sm mt-3">Instagram</label>
-                        <input type="text" name="instagram" value="{{ old('instagram') }}"
-                           
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Twitter</label>
-                        <input type="text" name="twitter" value="{{ old('twitter') }}"
-                       
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
-                        <label class="block font-semibold text-sm mt-3">LinkedIn</label>
-                        <input type="text" name="linkedin" value="{{ old('linkedin') }}"
-                         
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Password</label>
-                        <input type="password" name="password" required 
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Upload Chairman Signature</label>
-                        <input type="file" name="chairman_signature"
-                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Upload Examiner Signature</label>
-                        <input type="file" name="examiner_signature"
-                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-sm mb-1">Upload Centre Logo</label>
-                        <input type="file" name="centre_logo"
-                            class="p-3 w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex items-center justify-end space-x-3">
-                    <a href="{{ route('centres.index') }}"
-                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
-                        Cancel
-                    </a>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                        Save Centre
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</x-app-layout>
+    </main>
+
+    <script>
+        const getStates = async (countryId) => {
+            const stateSelect = document.getElementById('stateId');
+            const states = await (await fetch(`/countries/${countryId}/states`)).json();
+
+            // Clear old options
+            stateSelect.innerHTML = '<option value="">-- Select State --</option>';
+
+            // Add new options
+            states.forEach(state => {
+                let opt = document.createElement('option');
+                opt.value = state.id;
+                opt.textContent = state.name;
+                stateSelect.appendChild(opt);
+            });
+        }
+    </script>
+</x-layout>

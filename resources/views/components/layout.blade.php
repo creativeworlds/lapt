@@ -207,6 +207,7 @@
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.table.min.js"></script>
+    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
 </head>
 
 <body style="min-height:100vh">
@@ -234,7 +235,7 @@
                             <div class="flex-grow-1">
                                 <a href="{{ route('dashboard') }}" class="d-inline-block customNav {{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
                                 <a href="{{ route('invoices.index') }}" class="d-inline-block customNav {{ request()->routeIs('invoices.*') ? 'active' : '' }}">Sales</a>
-                                <a href="{{ route('centres.index') }}" class="d-inline-block customNav {{ request()->routeIs('centres.*') ? 'active' : '' }}">Centres</a>
+                                <a href="{{ route('centres.create') }}" class="d-inline-block customNav {{ request()->routeIs(['centres.*', 'centre-categories.*']) ? 'active' : '' }}">Centres</a>
                                 <a href="{{ route('courses.index') }}" class="d-inline-block customNav {{ request()->routeIs('courses.*') ? 'active' : '' }}">Courses</a>
                                 <a href="{{ route('students.index') }}" class="d-inline-block customNav {{ request()->routeIs('students.*') ? 'active' : '' }}">Students</a>
                             </div>
