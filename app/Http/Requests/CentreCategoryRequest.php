@@ -24,6 +24,7 @@ class CentreCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:centre_categories,name',
+            'sort_order' => 'integer',
         ];
     }
 
@@ -32,6 +33,7 @@ class CentreCategoryRequest extends FormRequest
         return [
             '*.required' => 'This field is required.',
             '*.unique' => 'This category already exists.',
+            '*.integer'=> 'Please enter numeric value.',
         ];
     }
 }

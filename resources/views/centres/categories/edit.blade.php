@@ -18,11 +18,13 @@
                         <div class="form-group">
                             <label class="form-label">Name</label>
                             <input type="text" placeholder="Category Name" class="form-control" name="name" id="name" value="{{ $centreCategory->name }}" />
+                            @error('name') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <div class="form-group mt-3">
                             <label class="form-label">Sort Order</label>
-                            <input type="text" class="form-control" name="sort_order" id="sortorder" value="{{ $centreCategory->sort_order }}" />
+                            <input type="text" class="form-control" name="sort_order" id="sortOrder" value="{{ $centreCategory->sort_order }}" />
+                            @error('sort_order') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <div class="form-group mt-3">
