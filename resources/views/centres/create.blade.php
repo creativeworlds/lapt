@@ -219,4 +219,69 @@
             });
         }
     </script>
+
+    <!-- ===== NEW: Auto currency/tax/GST mode logic (safe, additive) ===== -->
+    <script>
+        // Seller state mapping (for GST comparison). For now, Delhi for India GST deposits.
+        function getSellerState() {
+            var seller = $('#preferredSeller').val();
+            // Both options that bill India deposit GST via the India GSTIN registered in Delhi
+            // If you ever add another Indian seller, update here accordingly.
+            if (seller === 'Future Life Education Pvt Ltd') return 'Delhi';
+            if (seller === 'London Academy of Professional Training Ltd') return 'Delhi'; // GST deposited via India entity
+            return 'Delhi';
+        }
+
+        function updateBillingDerivedFields() {
+            var countryText = $('#countryId option:selected').text().trim();
+            var stateText = $('#stateId option:selected').text().trim();
+            var sellerState = getSellerState();
+
+            // Set defaults based on country
+            if (countryText === 'India') {
+                $('#currency').val('INR');
+                $('#taxType').val('GST');
+
+                // Decide GST mode based on state comparison (only if a state is chosen)
+                if (stateText && stateText !== '-- Select State --') {
+                    if (stateText.toLowerCase() === sellerState.toLowerCase()) {
+                        $('#gstMode').val('CGST + SGST');
+                        $('#gstModeDisplay').val('CGST + SGST');
+                    } else {
+                        $('#gstMode').val('IGST');
+                        $('#gstModeDisplay').val('IGST');
+                    }
+                } else {
+                    $('#gstMode').val('');
+                    $('#gstModeDisplay').val('');
+                }
+
+            } else if (countryText === 'United Kingdom' || countryText === 'UK' ||
+                countryText === 'United Kingdom of Great Britain and Northern Ireland') {
+                $('#currency').val('GBP');
+                $('#taxType').val('VAT');
+                $('#gstMode').val('VAT');
+                $('#gstModeDisplay').val('VAT');
+            } else if (countryText && countryText !== '-- Select Country --') {
+                // Other countries → treat as export for Indian GST purposes
+                // Leave currency as user-selected; mark tax appropriately
+                if ($('#taxType').val() === 'GST') { $('#taxType').val('None'); }
+                $('#gstMode').val('Export');
+                $('#gstModeDisplay').val('Export (0%)');
+            } else {
+                // No country selected
+                $('#gstMode').val('');
+                $('#gstModeDisplay').val('');
+            }
+        }
+
+        // Hook up change listeners (country, state, seller)
+        $(document).on('change', '#countryId', updateBillingDerivedFields);
+        $(document).on('change', '#stateId', updateBillingDerivedFields);
+        $(document).on('change', '#preferredSeller', updateBillingDerivedFields);
+
+        // Run once on load (in case of prefilled values or quick selections)
+        $(function () { updateBillingDerivedFields(); });
+    </script>
+    <!-- ===== END NEW: Auto logic ===== -->
 </x-layout>
