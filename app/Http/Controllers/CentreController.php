@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Enums\Currency;
 use App\Enums\PreferredSeller;
 use App\Enums\TaxType;
+use App\Http\Requests\CentreRequest;
 use App\Models\Centre;
 use App\Models\CentreCategory;
 use App\Models\Country;
-use Illuminate\Http\Request;
 use App\Enums\CentreType;
 
 class CentreController extends Controller
@@ -39,10 +39,8 @@ class CentreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req)
+    public function store(CentreRequest $req)
     {
-        return $req->all();
-
         Centre::create($req->all());
         return back()->with('message', 'Centre created successfully.');
     }
@@ -66,7 +64,7 @@ class CentreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $req, Centre $centre)
+    public function update(CentreRequest $req, Centre $centre)
     {
         $centre->update($req->all());
         return back()->with('message', 'Centre updated successfully.');

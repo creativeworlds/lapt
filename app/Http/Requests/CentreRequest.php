@@ -24,7 +24,15 @@ class CentreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'code' => 'required|numeric',
+            'code' => 'required',
+            'address' => 'required',
+            'country_id' => 'required',
+            'state_id' => 'required',
+            'city' => 'required',
+            'contact_person' => 'required',
+            'mobile' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
         ];
     }
 
@@ -32,7 +40,7 @@ class CentreRequest extends FormRequest
     {
         return [
             '*.required' => 'This field is required.',
-            '*.numeric' => 'Please use only numbers.',
+            '*.email' => 'Please enter valid email address.',
         ];
     }
 }

@@ -18,35 +18,38 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label class="form-label">Select Category</label>
-                                    <select class="form-control form-select" name="category_id" id="categoryId">
+                                    <select class="form-control form-select" name="centre_category_id" id="centreCategoryId">
                                         @foreach ($centreCategories as $centreCategory)
-                                            <option value="{{ $centreCategory->id }}">{{ $centreCategory->name }}</option>
+                                            <option value="{{ $centreCategory->id }}" @selected(old('centre_category_id') == $centreCategory->id)>{{ $centreCategory->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3 mt-lg-0">
                                     <label class="form-label">Centre Type</label>
-                                    <select class="form-control form-select" name="centre_type" id="centreType">
+                                    <select class="form-control form-select" name="type" id="type">
                                         @foreach ($centreTypes as $centreType)
-                                            <option value="{{ $loop->iteration }}">{{ $centreType }}</option>
+                                            <option value="{{ $loop->iteration }}" @selected(old('type') == $loop->iteration)>{{ $centreType }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Enter Centre Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" />
+                                    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" />
+                                    @error('name') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Enter Centre Code</label>
-                                    <input type="text" class="form-control" name="code" id="code" />
+                                    <input type="text" class="form-control" name="code" id="code" value="{{ old('code') }}" />
+                                    @error('code') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-12 mt-3">
                                     <label class="form-label">Address</label>
-                                    <textarea cols="45" rows="5" class="ckeditor" name="address" id="address"></textarea>
+                                    <textarea cols="45" rows="5" class="ckeditor" name="address" id="address">{{ old('address') }}</textarea>
+                                    @error('address') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
@@ -54,16 +57,24 @@
                                     <select name="country_id" class="form-control country form-select" id="countryId" onchange="getStates(this.value)">
                                         <option value="" selected="selected">-- Select Country --</option>
                                         @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>{{ $country->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('country_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">State</label>
                                     <select class="form-control form-select state" name="state_id" id="stateId">
                                         <option value="" selected="selected">-- Select State --</option>
+                                        
+                                        @if(old('country_id'))
+                                            @foreach ($countries->find(old('country_id'))->states as $state)
+                                                <option value="{{ $state->id }}" @selected(old('state_id') == $state->id)>{{ $state->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
+                                    @error('state_id') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <!-- ===================== NEW: Invoice & Tax Info ===================== -->
@@ -75,7 +86,7 @@
                                     <label class="form-label">Currency</label>
                                     <select name="currency" id="currency" class="form-control form-select currency">
                                         @foreach ($currencies as $currency)
-                                            <option value="{{ $currency }}">{{ $currency }}</option>
+                                            <option value="{{ $currency }}" @selected(old('currency') == $currency)>{{ $currency }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -84,96 +95,101 @@
                                     <label class="form-label">Tax Type</label>
                                     <select name="tax_type" id="taxType" class="form-control form-select tax-type">
                                         @foreach ($taxTypes as $taxType)
-                                            <option value="{{ $taxType }}">{{ $taxType }}</option>
+                                            <option value="{{ $taxType }}" @selected(old('tax_type') == $taxType)>{{ $taxType }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">GST / VAT Number</label>
-                                    <input type="text" name="gst_number" id="gstNumber" class="form-control" />
+                                    <input type="text" name="gst_number" id="gstNumber" class="form-control" value="{{ old('gst_number') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Preferred Seller</label>
                                     <select name="preferred_seller" id="preferredSeller" class="form-control form-select">
                                         @foreach ($preferredSellers as $preferredSeller)
-                                            <option value="{{ $preferredSeller }}">{{ $preferredSeller }}</option>
+                                            <option value="{{ $preferredSeller }}" @selected(old('preferred_seller') == $preferredSeller)>{{ $preferredSeller }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">GST Mode (Auto)</label>
-                                    <input type="text" id="gstModeDisplay" class="form-control" value="" readonly />
-                                    <input type="hidden" name="gst_mode" id="gstMode" value="" />
+                                    <input type="text" id="gstModeDisplay" class="form-control"  readonly />
+                                    <input type="hidden" name="gst_mode" id="gstMode" value="{{ old('gst_mode') }}"  />
                                     <small class="text-muted">If Country = India: CGST+SGST when Buyer State = Seller State (Delhi), otherwise IGST. UK/Other countries: VAT or Export (0%).</small>
                                 </div>
                                 <!-- =================== END NEW: Invoice & Tax Info =================== -->
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">City</label>
-                                    <input type="text" class="form-control" name="city" id="city" size="30" />
+                                    <input type="text" class="form-control" name="city" id="city" size="30" value="{{ old('city') }}" />
+                                    @error('city') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Contact Person</label>
-                                    <input type="text" class="form-control" name="contact_person" id="contactPerson" />
+                                    <input type="text" class="form-control" name="contact_person" id="contactPerson" value="{{ old('contact_person') }}" />
+                                    @error('contact_person') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Mobile Number</label>
-                                    <input type="text" class="form-control" name="mobile" id="mobile" />
+                                    <input type="text" class="form-control" name="mobile" id="mobile" value="{{ old('mobile') }}" />
+                                    @error('mobile') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" />
+                                    <input type="text" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Fax</label>
-                                    <input type="text" class="form-control" name="fax" id="fax" />
+                                    <input type="text" class="form-control" name="fax" id="fax" value="{{ old('fax') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" name="email" id="email" />
+                                    <input type="text" class="form-control" name="email" id="email" value="{{ old('email') }}" />
+                                    @error('email') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Description</label>
-                                    <textarea class="form-control" name="description" id="description"></textarea>
+                                    <textarea class="form-control" name="description" id="description">{{ old('description') }}</textarea>
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Website</label>
-                                    <input type="text" name="website" class="form-control" id="website" />
+                                    <input type="text" name="website" class="form-control" id="website" value="{{ old('website') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Facebook</label>
-                                    <input type="text" name="facebook" class="form-control" id="facebook" />
+                                    <input type="text" name="facebook" class="form-control" id="facebook" value="{{ old('facebook') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Twitter</label>
-                                    <input type="text" name="twitter" class="form-control" id="twitter" />
+                                    <input type="text" name="twitter" class="form-control" id="twitter" value="{{ old('twitter') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Instagram</label>
-                                    <input type="text" name="instagram" class="form-control" id="instagram" />
+                                    <input type="text" name="instagram" class="form-control" id="instagram" value="{{ old('instagram') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">LinkedIn</label>
-                                    <input type="text" name="linkedin" class="form-control" id="linkedin" />
+                                    <input type="text" name="linkedin" class="form-control" id="linkedin" value="{{ old('linkedin') }}" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Password</label>
                                     <input type="text" name="password" class="form-control" id="password" />
+                                    @error('password') <p class="text-danger mt-1">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">
