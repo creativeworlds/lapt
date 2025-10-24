@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CentreCategoryRequest;
 use App\Models\CentreCategory;
-use App\Models\UserActivityLog;
 
 class CentreCategoryController extends Controller
 {
@@ -32,20 +31,7 @@ class CentreCategoryController extends Controller
     public function store(CentreCategoryRequest $req)
     {
         // create centre category
-        $centreCategory = CentreCategory::create($req->all());
-
-        // user activity log create
-        UserActivityLog::create([
-            'user_id' => auth()->id(),
-            'module_name' => 'Centre Category',
-            'action_type' => 'Add',
-            'action_details' => 'Added a new centre category.',
-            'old_value' => [],
-            'new_value' => [
-                'id' => $centreCategory->id,
-                "name" => $req->name
-            ]
-        ]);
+        CentreCategory::create($req->all());
 
         return back()->with('message', 'Centre category created successfully.');
     }
@@ -71,23 +57,6 @@ class CentreCategoryController extends Controller
      */
     public function update(CentreCategoryRequest $req, CentreCategory $centreCategory)
     {
-        // user activity log create
-        UserActivityLog::create([
-            'user_id' => auth()->id(),
-            'module_name' => 'Centre Category',
-            'action_type' => 'Update',
-            'action_details' => 'Updated a centre category.',
-            'old_value' => [
-                'id' => $centreCategory->id,
-                "name" => $centreCategory->name,
-                'sort_order' => $centreCategory->sort_order
-            ],
-            'new_value' => [
-                'name' => $req->name,
-                'sort_order' => $req->sort_order
-            ]
-        ]);
-
         // update centre category
         $centreCategory->update($req->all());
 
@@ -101,19 +70,6 @@ class CentreCategoryController extends Controller
     {
         // delete centre category
         $centreCategory->delete();
-
-        // user activity log create
-        UserActivityLog::create([
-            'user_id' => auth()->id(),
-            'module_name' => 'Centre Category',
-            'action_type' => 'Delete',
-            'action_details' => 'Deleted a centre category.',
-            'old_value' => [
-                'id' => $centreCategory->id,
-                "name" => $centreCategory->name
-            ],
-            'new_value' => []
-        ]);
 
         return back()->with('error', 'Centre category deleted successfully.');
     }

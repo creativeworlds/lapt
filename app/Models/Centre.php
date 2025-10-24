@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Observers\ActivityLogObserver;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(ActivityLogObserver::class)]
 class Centre extends Model
 {
     protected $fillable = [
