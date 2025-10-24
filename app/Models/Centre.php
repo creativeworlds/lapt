@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Centre extends Model
 {
     protected $fillable = [
-        'category',
-        'type',
         'name',
         'code',
+        'centre_category_id',
+        'type',
         'address',
-        'country',
-        'state',
+        'country_id',
+        'state_id',
+        'currency',
+        'tax_type',
+        'gst_number',
+        'preferred_seller',
+        'gst_mode',
         'city',
         'contact_person',
         'mobile',
@@ -27,13 +32,8 @@ class Centre extends Model
         'instagram',
         'linkedin',
         'password',
-        'chairman_signature',
-        'examiner_signature',
-        'center_logo',
+        'chairman_sign',
+        'examiner_sign',
+        'logo',
     ];
-
-    public function courses()
-    {
-        return $this->hasmany(Course::class);
-    }
 }
