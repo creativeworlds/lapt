@@ -194,7 +194,7 @@
 
                                 <div class="form-group col-md-6 mt-3">
                                     <label class="form-label">Upload Chairman Signature</label>
-                                    <input name="chairman_sign" class="form-control" type="file" accept="image/*" id="chairmanSign" />
+                                    <input type="file" accept="image/*" name="chairman_sign" class="form-control" id="chairmanSign" />
                                 </div>
 
                                 <div class="form-group col-md-6 mt-3">

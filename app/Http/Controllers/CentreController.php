@@ -10,6 +10,7 @@ use App\Models\Centre;
 use App\Models\CentreCategory;
 use App\Models\Country;
 use App\Enums\CentreType;
+use App\Models\UserActivityLog;
 
 class CentreController extends Controller
 {
@@ -41,7 +42,34 @@ class CentreController extends Controller
      */
     public function store(CentreRequest $req)
     {
-        Centre::create($req->all());
+        // Initialize optional paths
+        $chairman_sign = $examiner_sign = $logo = null;
+
+        // Upload chairman signature
+        if ($req->hasFile('chairman_sign'))
+            $chairman_sign = $req->chairman_sign->storeAs('centres', date('Y_m_d') . '_CHM_' . $req->chairman_sign->getClientOriginalName(), 'public');
+
+        // Upload examiner signature
+        if ($req->hasFile('examiner_sign'))
+            $examiner_sign = $req->examiner_sign->storeAs('centres', date('Y_m_d') . '_EXM_' . $req->examiner_sign->getClientOriginalName(), 'public');
+
+        // Upload center logo
+        if ($req->hasFile('logo'))
+            $logo = $req->logo->storeAs('centres', date('Y_m_d') . '_LOGO_' . $req->logo->getClientOriginalName(), 'public');
+
+        // Create centre record
+        $centre = Centre::create([...$req->all(), ...compact(['chairman_sign', 'examiner_sign', 'logo'])]);
+
+        // user activity log create
+        UserActivityLog::create([
+            'user_id' => auth()->id(),
+            'module_name' => 'Centres',
+            'action_type' => 'Add',
+            'action_details' => 'Added a new centre.',
+            'old_value' => [],
+            'new_value' => $centre->except(['created_at', 'updated_at'])
+        ]);
+
         return back()->with('message', 'Centre created successfully.');
     }
 
