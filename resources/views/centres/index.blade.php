@@ -1,67 +1,102 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight inline mr-5">
-            {{ __('Centres') }}
-        </h2>
+<x-layout title="Centres">
+    <main class="centres-index-blade main-content-div">
+        <x-centre-tab />
 
-        <a href="{{ route('centres.create') }}"
-            class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-            Add Centre
-        </a>
-    </x-slot>
+        <div class="container-fluid pb-5">
+            <div class="card shadow p-md-3">
+                <div class="card-header bg-white">
+                    <div class="d-flex justify-content-between">
+                        <h2>Centres List</h2>
+                        <h2>Total Records: <strong>{{ $totalCentres }}</strong></h2>
+                    </div>
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 class="text-2xl font-bold mb-6">Centres</h1>
+                    @session('error') <p class="text-danger">{{ session('error') }}</p> @endsession
+                </div>
 
-            @if(session('message'))
-                <p class="w-full text-green-700 text-[14px] mt-[2px]">{{ session('message') }}</p>
-            @endif
-
-            <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-                <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
-                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Code</th>
-                            <th class="px-6 py-3 text-right text-sm font-semibold text-gray-700">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach($centres as $centre)
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-800">
-                                    <a href="{{ route('centres.students.create', $centre) }}">{{ $centre->name }}</a></td>
-                                <td class="px-6 py-4 text-sm text-gray-600">{{ $centre->code }}</td>
-                                <td class="px-6 py-4 text-sm text-right space-x-2">
-
-                                    <a href="{{ route('centres.students.create', $centre) }}"
-                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                                        Student Enrollment
-                                    </a>
-                                    <!-- Edit button -->
-                                    <a href="{{ route('centres.edit', $centre) }}"
-                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                                        Edit
-                                    </a>
-
-                                    <!-- Delete button -->
-                                    <form action="{{ route('centres.destroy', $centre) }}" method="post"
-                                        class="inline-block"
-                                        onsubmit="return confirm('Are you sure you want to delete this centre?');">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit"
-                                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                <th width="42" align="left" bgcolor="#ECE9D8"><strong>S.No</strong></th>
+                                <th width="25" align="left" bgcolor="#ECE9D8">&nbsp;</th>
+                                <th width="161" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Category</th>
+                                <th width="161" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Type</th>
+                                <th width="161" align="left" nowrap="nowrap" bgcolor="#ECE9D8"><strong>Centre Name</strong></th>
+                                <th width="161" align="left" nowrap="nowrap" bgcolor="#ECE9D8"><strong>Upload Assessment Docs</strong></th>
+                                <th width="64" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Code</th>
+                                <th width="92" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Address</th>
+                                <th width="102" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Email</th>
+                                <th width="102" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Contact Person</th>
+                                <th width="102" align="left" nowrap="nowrap" bgcolor="#ECE9D8">Mobile</th>
+                                <th width="65" align="left" bgcolor="#ECE9D8">&nbsp;</th>
+                                <th width="65" align="left" bgcolor="#ECE9D8">&nbsp;</th>
+                                <th width="65" align="left" bgcolor="#ECE9D8">&nbsp;</th>
+                                <th width="65" align="left" bgcolor="#ECE9D8">&nbsp;</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            @foreach ($centres as $centre)
+                                <tr>
+                                    <td align="left">{{ $loop->iteration }}</td>
+                                    <td align="left"><input type="checkbox" name="delete[]" value="{{ $centre->id }}" /></td>
+                                    <td align="left">{{ $centre->centreCategory->name }}</td>
+                                    <td align="left">{{ $centreTypes[$centre->type] }}</td>
+                                    <td>
+                                        <a target="_blank" href="{{ route('centres.students.create', ['centre' => $centre, 'country' => $centre->country_id, 'state' => $centre->state_id]) }}">
+                                            {{ $centre->name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a target="_blank" href="/student_assmt_doc.php?centerId={{ $centre->id }}">
+                                            Upload Assessment Docs
+                                        </a>
+                                    </td>
+                                    <td align="left">{{ $centre->code }}</td>
+                                    <td align="left">{{ strip_tags($centre->address) }}</td>
+                                    <td align="left">{{ $centre->email }}</td>
+                                    <td align="left">{{ $centre->contact_person }}</td>
+                                    <td align="left">{{ $centre->mobile }}</td>
+                                    <td align="left">Uploads</td>
+                                    <td align="left" nowrap="nowrap">
+                                        <a href="centre_mapping.php?centreid={{ $centre->id }}&TB_iframe=true&keepthis=true&width=800&height=500" title="Allot Courses" class="thickbox">Centre Mapping</a>
+                                    </td>
+                                    <td align="left" nowrap="nowrap">
+                                        <a href="allot_courses.php?centreid={{ $centre->id }}&TB_iframe=true&keepthis=true&width=800&height=500" title="Allot Courses" class="thickbox">Allot Courses</a>
+                                    </td>
+                                    <td class="d-flex justify-content-center gap-1">
+                                        <a class="btn btn-primary text-white" href="{{ route('centres.edit', $centre) }}" target="_blank">Edit</a>
+
+                                        <form action="{{ route('centres.destroy', $centre) }}" method="post" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this?');">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+
             </div>
         </div>
-    </div>
-</x-app-layout>
+    </main>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,
+                ordering: true,
+                info: true,
+                dom: 'Bfrtip',
+                lengthMenu: [
+                    [10, 50, 100, 500, 1000, -1],
+                    [10, 50, 100, 500, 1000, "All"]
+                ],
+                buttons: ['excelHtml5', 'pdfHtml5', 'pageLength']
+            });
+        });
+    </script>
+</x-layout>

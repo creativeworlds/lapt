@@ -39,4 +39,9 @@ class Centre extends Model
         'examiner_sign',
         'logo',
     ];
+
+    public function centreCategory()
+    {
+        return $this->belongsTo(CentreCategory::class);
+    }
 }

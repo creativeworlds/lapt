@@ -19,7 +19,9 @@ class CentreController extends Controller
     public function index()
     {
         $centres = Centre::all();
-        return view('centres.index', compact('centres'));
+        $totalCentres = Centre::count();
+        $centreTypes = CentreType::cases();
+        return view('centres.index', compact(['centres', 'totalCentres', 'centreTypes']));
     }
 
     /**
@@ -93,7 +95,7 @@ class CentreController extends Controller
     public function destroy(Centre $centre)
     {
         $centre->delete();
-        return back()->with('message', 'Centre deleted successfully.');
+        return back()->with('error', 'Centre deleted successfully.');
     }
 
     public function getCentreCourses(Centre $centre)
