@@ -35,7 +35,8 @@ class CentreController extends Controller
         $currencies = Currency::cases();
         $taxTypes = TaxType::cases();
         $preferredSellers = PreferredSeller::cases();
-        return view('centres.create', compact(['centreCategories', 'countries', 'centreTypes', 'currencies', 'taxTypes', 'preferredSellers']));
+
+        return view('centres.create', compact('centreCategories', 'countries', 'centreTypes', 'currencies', 'taxTypes', 'preferredSellers'));
     }
 
     /**
@@ -77,7 +78,14 @@ class CentreController extends Controller
      */
     public function edit(Centre $centre)
     {
-        return view('centres.edit', compact('centre'));
+        $centreCategories = CentreCategory::all();
+        $countries = Country::get(['id', 'name']);
+        $centreTypes = CentreType::cases();
+        $currencies = Currency::cases();
+        $taxTypes = TaxType::cases();
+        $preferredSellers = PreferredSeller::cases();
+
+        return view('centres.edit', compact('centreCategories', 'countries', 'centreTypes', 'currencies', 'taxTypes', 'preferredSellers', 'centre'));
     }
 
     /**
@@ -85,7 +93,21 @@ class CentreController extends Controller
      */
     public function update(CentreRequest $req, Centre $centre)
     {
-        $centre->update($req->all());
+        // Upload chairman signature
+        if ($req->hasFile('chairman_sign'))
+            $chairman_sign = $req->chairman_sign->storeAs('centres', date('Y_m_d') . '_CHM_' . $req->chairman_sign->getClientOriginalName(), 'public');
+
+        // Upload examiner signature
+        if ($req->hasFile('examiner_sign'))
+            $examiner_sign = $req->examiner_sign->storeAs('centres', date('Y_m_d') . '_EXM_' . $req->examiner_sign->getClientOriginalName(), 'public');
+
+        // Upload center logo
+        if ($req->hasFile('logo'))
+            $logo = $req->logo->storeAs('centres', date('Y_m_d') . '_LOGO_' . $req->logo->getClientOriginalName(), 'public');
+
+        // Create centre record
+        $centre->update([...$req->all(), ...compact(['chairman_sign', 'examiner_sign', 'logo'])]);
+
         return back()->with('message', 'Centre updated successfully.');
     }
 

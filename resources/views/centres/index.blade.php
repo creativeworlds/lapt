@@ -4,16 +4,16 @@
 
         <div class="container-fluid pb-5">
             <div class="card shadow p-md-3">
-                <div class="card-header bg-white">
+                <div class="card-header bg-white px-0">
                     <div class="d-flex justify-content-between">
-                        <h2>Centres List</h2>
-                        <h2>Total Records: <strong>{{ $totalCentres }}</strong></h2>
+                        <h2 class="mb-0">Centres List</h2>
+                        <h2 class="mb-0">Total Records: <strong>{{ $totalCentres }}</strong></h2>
                     </div>
-
-                    @session('error') <p class="text-danger">{{ session('error') }}</p> @endsession
                 </div>
 
-                <div class="table-responsive">
+                @session('error') <p class="text-danger mt-2">{{ session('error') }}</p> @endsession
+
+                <div class="table-responsive mt-4">
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>

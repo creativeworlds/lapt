@@ -11,10 +11,10 @@
                             <a href="{{ route('centre-categories.index') }}" title="Edit Category">Edit Category</a>
                         </li>
                         <li role="presentation">
-                            <a href="{{ route('centres.create') }}" title="Add centre">Add centre</a>
+                            <a href="{{ route('centres.create') }}" title="Add centre">Add Centre</a>
                         </li>
                         <li role="presentation">
-                            <a href="{{ route('centres.index') }}" title="Edit centre">Edit centre</a>
+                            <a href="{{ route('centres.index') }}" title="Edit centre">Edit Centre</a>
                         </li>
                     </ul>
                 </div>
